@@ -225,3 +225,5 @@ project.lock.json
 #####
 *.cache
 *.targets
+*.testlog
+.vs/Codingame/v16/.suo
