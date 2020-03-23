@@ -1,7 +1,6 @@
 ﻿using Codingame.Model;
 using System;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("CodingameTests")]

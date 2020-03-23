@@ -1,7 +1,5 @@
 ﻿using Codingame.Model;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Codingame
 {
@@ -22,20 +20,36 @@ namespace Codingame
 
         public void LoadGameState()
         {
-            // first load only
+            var height = int.Parse(_inputs[1]);
+            var width = int.Parse(_inputs[0]);
+
+            _gameState.MapHeight = height;
+            _gameState.MapWidth = width;
+            _gameState.PlayerStartsFirst = int.Parse(_inputs[2]) == 0;
+
+            _gameState.CellMap = new Cell[height, width];
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    _gameState.CellMap[i, j] = new Cell(_lines[i][j].ToString(), i, j);
+                    _gameState.CellMap[j, i] = new Cell(_lines[j][i].ToString(), j, i);
+                }
+            }
         }
 
         public void UpdateGameState(string[] inputs, string opponentOrders)
         {
-            // edit map
-            int x = int.Parse(inputs[0]);
-            int y = int.Parse(inputs[1]);
-            int myLife = int.Parse(inputs[2]);
-            int oppLife = int.Parse(inputs[3]);
-            int torpedoCooldown = int.Parse(inputs[4]);
-            int sonarCooldown = int.Parse(inputs[5]);
-            int silenceCooldown = int.Parse(inputs[6]);
-            int mineCooldown = int.Parse(inputs[7]);
+            _gameState.MyCoordinates = new Cell(int.Parse(inputs[0]), int.Parse(inputs[1]));
+            _gameState.MyLife = int.Parse(inputs[2]);
+            _gameState.EnemyLife = int.Parse(inputs[3]);
+
+            //int torpedoCooldown = int.Parse(inputs[4]);
+            //int sonarCooldown = int.Parse(inputs[5]);
+            //int silenceCooldown = int.Parse(inputs[6]);
+            //int mineCooldown = int.Parse(inputs[7]);
+
             // using frequency analyser work out enemy position
         }
     }

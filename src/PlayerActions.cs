@@ -1,13 +1,11 @@
 ﻿using Codingame.Model;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Codingame
 {
     internal class PlayerActions
     {
-        internal string[] Actions { get; set; }
+        internal List<string> Actions { get; set; }
         private GameState _gameState;
 
         internal PlayerActions(GameState gameState)
@@ -17,7 +15,7 @@ namespace Codingame
 
         internal void SetStartingPosition()
         {
-            // Add to Actions
+            Actions = new List<string> { "3 5" };
         }
 
         internal void Act()

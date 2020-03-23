@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Codingame.Model
+﻿namespace Codingame.Model
 {
     internal class OutputGenerator
     {

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 
 [assembly: InternalsVisibleTo("CodingameTests")]
 namespace Codingame.Model
@@ -37,6 +34,7 @@ namespace Codingame.Model
 
         internal GameState()
         {
+            
         }
 
         internal void LoadSectors()
