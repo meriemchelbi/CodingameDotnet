@@ -11,21 +11,22 @@ namespace Codingame
         internal PlayerActions(GameState gameState)
         {
             _gameState = gameState;
+            Actions = new List<string>();
         }
 
         internal void SetStartingPosition()
         {
-            Actions = new List<string> { "3 5" };
+            Actions.Add("3 7");
         }
 
         internal void Act()
         {
-            // Call each method as appropriate
+            Move();
         }
 
         private void Move()
         {
-            // do the thing & add to Actions
+            Actions.Add("MOVE N");
         }
 
         private void Surface()

@@ -1,11 +1,16 @@
-﻿namespace Codingame.Model
+﻿using System;
+using System.Linq;
+using System.Text;
+
+namespace Codingame.Model
 {
     internal class OutputGenerator
     {
         private PlayerActions _playerActions;
         private GameState _gameState;
-        private string _gameStateOutput;
-        private string _gameOutput;
+        // ideally would like these fields private as well as testable- any way around this?
+        internal string GameStateOutput;
+        internal string GameOutput;
         
 
         internal OutputGenerator(GameState gameState, PlayerActions playerActions)
@@ -16,7 +21,8 @@
 
         internal void OutputActions()
         {
-            // using GameOutput & Console.Writeline
+            ConstructGameOutput();
+            Console.WriteLine(GameOutput);
         }
 
         internal void DisplayGameState()
@@ -30,10 +36,22 @@
             return string.Empty;
         }
         
-        private string ConstructGameOutput()
+        private void ConstructGameOutput()
         {
-            // using PlayerActions (make sure you clear them when done)
-            return string.Empty;
+            var stringBuilder = new StringBuilder();
+            var numberOfActions = _playerActions.Actions.Count;
+            
+            if ( numberOfActions > 1)
+            {
+                for (int i = 0; i < numberOfActions - 1; i++)
+                {
+                    stringBuilder.Append(_playerActions.Actions[i] + " | ");
+                }
+            }
+            
+            stringBuilder.Append(_playerActions.Actions[numberOfActions - 1]);
+            GameOutput = stringBuilder.ToString();
+            _playerActions.Actions.Clear();
         }
     }
 }
