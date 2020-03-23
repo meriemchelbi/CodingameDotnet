@@ -6,7 +6,12 @@ namespace Codingame.Model
 {
     class Sector
     {
-        public string Name { get; }
-        public List<Cell> Cells { get; }
+        internal string Name { get; }
+        internal List<Cell> Cells { get; }
+
+        internal Sector(string name)
+        {
+            Name = name;
+        }
     }
 }

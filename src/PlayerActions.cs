@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Codingame.Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,10 +8,11 @@ namespace Codingame
     internal class PlayerActions
     {
         internal string[] Actions { get; set; }
+        private GameState _gameState;
 
-        internal PlayerActions()
+        internal PlayerActions(GameState gameState)
         {
-            // inject GameState
+            _gameState = gameState;
         }
 
         internal void SetStartingPosition()
@@ -33,7 +35,7 @@ namespace Codingame
             // do the thing & add to Actions
         }
 
-        internal void Torpedo()
+        private void Torpedo()
         {
             // do the thing & add to Actions
         }

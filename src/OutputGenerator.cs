@@ -6,13 +6,16 @@ namespace Codingame.Model
 {
     internal class OutputGenerator
     {
-        private string _gameOutput { get; set; }
-        private string _gameStateOutput { get; set; }
+        private PlayerActions _playerActions;
+        private GameState _gameState;
+        private string _gameStateOutput;
+        private string _gameOutput;
+        
 
-        internal OutputGenerator()
+        internal OutputGenerator(GameState gameState, PlayerActions playerActions)
         {
-            // inject GameState
-            // inject PlayerActions
+            _gameState = gameState;
+            _playerActions = playerActions;
         }
 
         internal void OutputActions()

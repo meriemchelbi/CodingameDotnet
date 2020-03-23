@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Codingame.Model;
+using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
@@ -20,10 +21,15 @@ namespace Codingame
                 map.Add(line);
             }
 
-            // New gamestate, input parser, frequency analyser, playeractions, output generator
-            // Load GameState (using input parser)
-            // Set starting position
-            // Output actions
+            var gameState = new GameState();
+            var frequencyAnalyser = new FrequencyAnalyser(gameState);
+            var playerActions = new PlayerActions(gameState);
+            var inputParser = new InputParser(gameState, inputs, map, frequencyAnalyser);
+            var outputGenerator = new OutputGenerator(gameState, playerActions);
+
+            inputParser.LoadGameState();
+            playerActions.SetStartingPosition();
+            outputGenerator.OutputActions();
 
             // game loop
             while (true)
@@ -32,11 +38,10 @@ namespace Codingame
                 var sonarResult = Console.ReadLine();
                 var opponentOrders = Console.ReadLine();
 
-                // input parser- update GameState
-                // work out opponent position based on orders (using frequency analyser)
-                // Display GameState
-                // Act
-                // output actions
+                inputParser.UpdateGameState(inputs, opponentOrders);
+                outputGenerator.DisplayGameState();
+                playerActions.Act();
+                outputGenerator.OutputActions();
             }
         }
     }

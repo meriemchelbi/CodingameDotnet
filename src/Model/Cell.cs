@@ -14,7 +14,7 @@ namespace Codingame
     public enum CellValues
     {
         Island,
-        Enemy,
+        //Enemy,
         Empty
     }
 }
