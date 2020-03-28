@@ -24,5 +24,21 @@ namespace CodingameTests
 
             sut.GameOutput.Should().Be(expectedOutput);
         }
+
+        [Fact]
+        public void ConstructGameStateGeneratesExpectedOutput()
+        {
+            var gameState = new GameState()
+            {
+                // populate gamestate
+            };
+            var playerActions = new PlayerActions(gameState);
+            var sut = new OutputGenerator(gameState, playerActions);
+            var expectedOutput = "wobble"; // update this value
+
+            sut.DisplayGameState();
+
+            sut.GameStateOutput.Should().Be(expectedOutput);
+        }
     }
 }

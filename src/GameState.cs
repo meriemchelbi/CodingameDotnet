@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("CodingameTests")]
-namespace Codingame.Model
+namespace Codingame
 {
     internal class GameState
     {
@@ -13,7 +13,7 @@ namespace Codingame.Model
         {
             get
             {
-                if (!(_sectorMap is null))
+                if (!(_sectorMap == null))
                 {
                     return _sectorMap;
                 }
@@ -34,7 +34,7 @@ namespace Codingame.Model
 
         internal GameState()
         {
-            
+
         }
 
         internal void LoadSectors()

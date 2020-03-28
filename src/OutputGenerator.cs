@@ -27,13 +27,13 @@ namespace Codingame.Model
 
         internal void DisplayGameState()
         {
-            // using gameStateOutput & Console.Error.WriteLine("Debug messages...")
+            ConstructGameState();
+            Console.Error.WriteLine(GameStateOutput);
         }
 
-        private string ConstructGameState()
+        private void ConstructGameState()
         {
-            // from Map
-            return string.Empty;
+            GameStateOutput = "wibble";
         }
         
         private void ConstructGameOutput()

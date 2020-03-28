@@ -19,7 +19,8 @@
 
         internal bool Equals(Cell cell1, Cell cell2)
         {
-            return cell1.Coordinates == cell2.Coordinates;
+            return (cell1.Coordinates.Item1 == cell2.Coordinates.Item1)
+                && (cell1.Coordinates.Item2 == cell2.Coordinates.Item2);
         }
     }
 

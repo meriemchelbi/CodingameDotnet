@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Codingame.Model
+namespace Codingame
 {
     class Sector
     {

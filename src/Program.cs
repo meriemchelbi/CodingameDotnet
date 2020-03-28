@@ -30,7 +30,6 @@ namespace Codingame
             playerActions.SetStartingPosition();
             outputGenerator.OutputActions();
 
-            // game loop
             while (true)
             {
                 inputs = Console.ReadLine().Split(' ');

@@ -1,5 +1,4 @@
-﻿using Codingame.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Codingame
 {
