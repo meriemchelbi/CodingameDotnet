@@ -29,7 +29,12 @@ namespace Codingame
 
         public override string ToString()
         {
-            return $"({Coordinates.Item1}, {Coordinates.Item2})";
+            return $"({Coordinates.Item1}, {Coordinates.Item2}, Visited: {Visited}, Value: {Value}, Is free? {IsFree()} )";
+        }
+
+        internal bool IsFree()
+        {
+            return Value == "." && !Visited;
         }
     }
 
