@@ -1,10 +1,14 @@
-﻿namespace Codingame
+﻿using System;
+using System.Collections.Generic;
+
+namespace Codingame
 {
     internal class Cell
     {
         internal (int, int) Coordinates { get; set; }
         internal string Value { get; set; }
         internal bool Visited { get; set; }
+        internal int Score { get; set; }
 
         internal Cell(int x, int y)
         {

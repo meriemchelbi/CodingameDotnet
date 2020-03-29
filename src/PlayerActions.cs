@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Codingame
 {
@@ -15,7 +17,14 @@ namespace Codingame
 
         internal void SetStartingPosition()
         {
-            Actions.Add("3 7");
+            var corners = GetMapCorners();
+
+            var selected = corners.Where(c => c.Value == ".").FirstOrDefault() 
+                ?? GetFirstFreeCell();
+
+            var action = $"{selected.Coordinates.Item1} {selected.Coordinates.Item2}";
+            Actions.Add(action);
+
         }
 
         internal void Act()
@@ -23,9 +32,40 @@ namespace Codingame
             Move();
         }
 
+        private List<Cell> GetMapCorners()
+        {
+            var lastCol = _gameState.MapWidth - 1;
+            var lastRow = _gameState.MapHeight - 1;
+
+            return new List<Cell>
+            {
+                _gameState.CellMap[0, 0],
+                _gameState.CellMap[0, lastCol],
+                _gameState.CellMap[lastRow, 0],
+                _gameState.CellMap[lastRow, lastCol]
+            };
+        }
+
+        private Cell GetFirstFreeCell()
+        {
+            var width = _gameState.CellMap.GetLength(0);
+            var height = _gameState.CellMap.GetLength(1);
+            
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    if (_gameState.CellMap[i, j].Value == ".")
+                        return _gameState.CellMap[i, j];
+                }
+            }
+
+            return null;
+        }
+
         private void Move()
         {
-            Actions.Add("MOVE N");
+            Actions.Add("MOVE E");
         }
 
         private void Surface()

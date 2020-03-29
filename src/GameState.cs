@@ -26,18 +26,16 @@ namespace Codingame
             }
         }
         private List<Sector> _sectorMap;
+
         internal Cell MyCoordinates { get; set; }
         internal int MyLife { get; set; }
+
         internal Sector EnemySector { get; set; }
         internal int OpponentLife { get; set; }
         internal string OpponentOrders { get; set; }
+
         internal bool PlayerStartsFirst { get; set; }
 
-
-        internal GameState()
-        {
-
-        }
 
         internal void LoadSectors()
         {
