@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace Codingame.Model
+namespace Codingame
 {
     internal class OutputGenerator
     {
@@ -11,7 +11,7 @@ namespace Codingame.Model
         // ideally would like these fields private as well as testable- any way around this?
         internal string GameStateOutput;
         internal string GameOutput;
-        
+
 
         internal OutputGenerator(GameState gameState, PlayerActions playerActions)
         {
@@ -27,28 +27,61 @@ namespace Codingame.Model
 
         internal void DisplayGameState()
         {
-            ConstructGameState();
+            ConstructGameStateOutput();
             Console.Error.WriteLine(GameStateOutput);
         }
 
-        private void ConstructGameState()
+        private void ConstructGameStateOutput()
         {
-            GameStateOutput = "wibble";
+            var printedMap = PrintCellMap();
+
+            GameStateOutput = 
+
+$@"Game state:
+Map Height: {_gameState.MapHeight}
+Map Width: {_gameState.MapWidth}
+Cell Map:
+{printedMap}
+My position: {_gameState.MyCoordinates.ToString()}
+My life: {_gameState.MyLife}
+Opponent life: {_gameState.OpponentLife}
+Opponent orders: {_gameState.OpponentOrders}
+I start first? {_gameState.PlayerStartsFirst}";
         }
-        
+
+        private string PrintCellMap()
+        {
+            var sb = new StringBuilder();
+            var rowLength = _gameState.CellMap.GetLength(0);
+            var colLength = _gameState.CellMap.GetLength(1);
+
+            sb.Append("\n");
+            for (int i = 0; i < rowLength; i++)
+            {
+                for (int j = 0; j < colLength; j++)
+                {
+                    sb.Append(_gameState.CellMap[i, j].Value + " ");
+                }
+
+                sb.Append("\n");
+            }
+
+            return sb.ToString();
+        }
+
         private void ConstructGameOutput()
         {
             var stringBuilder = new StringBuilder();
             var numberOfActions = _playerActions.Actions.Count;
-            
-            if ( numberOfActions > 1)
+
+            if (numberOfActions > 1)
             {
                 for (int i = 0; i < numberOfActions - 1; i++)
                 {
                     stringBuilder.Append(_playerActions.Actions[i] + " | ");
                 }
             }
-            
+
             stringBuilder.Append(_playerActions.Actions[numberOfActions - 1]);
             GameOutput = stringBuilder.ToString();
             _playerActions.Actions.Clear();

@@ -42,7 +42,8 @@ namespace Codingame
         {
             _gameState.MyCoordinates = new Cell(int.Parse(inputs[0]), int.Parse(inputs[1]));
             _gameState.MyLife = int.Parse(inputs[2]);
-            _gameState.EnemyLife = int.Parse(inputs[3]);
+            _gameState.OpponentLife = int.Parse(inputs[3]);
+            _gameState.OpponentOrders = opponentOrders;
 
             //int torpedoCooldown = int.Parse(inputs[4]);
             //int sonarCooldown = int.Parse(inputs[5]);

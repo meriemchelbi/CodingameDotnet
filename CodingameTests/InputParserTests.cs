@@ -1,5 +1,4 @@
 using Codingame;
-using Codingame.Model;
 using FluentAssertions;
 using System.Collections.Generic;
 using Xunit;
@@ -35,7 +34,7 @@ namespace CodingameTests
         public void UpdateGameStateLoadsLatestGameParameters()
         {
             var inputs = new string[] { "4", "5", "3", "2" };
-            var opponentOrders = "";
+            var opponentOrders = "Wibble";
             var lines = new List<string>();
             var gameState = new GameState();
             var analyser = new FrequencyAnalyser(gameState);
@@ -45,7 +44,8 @@ namespace CodingameTests
 
             gameState.MyCoordinates.Should().BeEquivalentTo(new Cell(4, 5));
             gameState.MyLife.Should().Be(3);
-            gameState.EnemyLife.Should().Be(2);
+            gameState.OpponentLife.Should().Be(2);
+            gameState.OpponentOrders.Should().Be("Wibble");
         }
     }
 }

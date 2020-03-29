@@ -22,6 +22,11 @@
             return (cell1.Coordinates.Item1 == cell2.Coordinates.Item1)
                 && (cell1.Coordinates.Item2 == cell2.Coordinates.Item2);
         }
+
+        public override string ToString()
+        {
+            return $"({Coordinates.Item1}, {Coordinates.Item2})";
+        }
     }
 
 }

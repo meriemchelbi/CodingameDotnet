@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("CodingameTests")]
+
 namespace Codingame
 {
     internal class GameState
@@ -28,7 +29,8 @@ namespace Codingame
         internal Cell MyCoordinates { get; set; }
         internal int MyLife { get; set; }
         internal Sector EnemySector { get; set; }
-        internal int EnemyLife { get; set; }
+        internal int OpponentLife { get; set; }
+        internal string OpponentOrders { get; set; }
         internal bool PlayerStartsFirst { get; set; }
 
 
