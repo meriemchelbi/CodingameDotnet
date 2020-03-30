@@ -6,10 +6,6 @@ namespace Codingame
 {
     internal class PlayerActions
     {
-        public const string North = "N";
-        public const string South = "S";
-        public const string East = "E";
-        public const string West = "W";
         internal List<string> Actions { get; set; }
         internal string PreviousDirection { get; set; }
         private readonly List<Cell> _freeNeighbours;
@@ -37,9 +33,8 @@ namespace Codingame
         internal void Act()
         {
             _gameState.Me.Visited = true;
-            
+
             FindFreeNeighbours();
-            _freeNeighbours.ForEach(c => Console.Error.WriteLine($"free neighbour {c.ToString()}"));
 
             if (_freeNeighbours.Count > 0)
                 Move();
@@ -85,7 +80,6 @@ namespace Codingame
             var x = _gameState.Me.ColX;
             var y = _gameState.Me.RowY;
 
-            // feels I could simplify this?
             var north = y > 0
                 ? _gameState.CellMap[y - 1, x]
                 : null;
@@ -109,20 +103,17 @@ namespace Codingame
 
         private void Move()
         {
-            Console.Error.WriteLine($"previous direction: {PreviousDirection}");
             var nextCellInPath = PreviousDirection != null ? FindNextCell(PreviousDirection) : null;
 
             // if I can move in current path, do so
             if (PreviousDirection != null && _freeNeighbours.Contains(nextCellInPath))
             {
-                Console.Error.WriteLine($"next cell in path: {nextCellInPath.ToString()}");
                 Actions.Add($"MOVE {PreviousDirection}");
             }
 
             // if only one free neighbour or can't move in current path or haven't moved before, move to first free neighbour
             else
             {
-                Console.Error.WriteLine($"first free neighbour: {_freeNeighbours[0].ToString()}");
                 PreviousDirection = GetRelativeDirection(_freeNeighbours[0]);
                 Actions.Add($"MOVE {PreviousDirection}");
             }

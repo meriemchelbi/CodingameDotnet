@@ -40,7 +40,7 @@ namespace Codingame
 
         public void UpdateGameState(string[] inputs, string opponentOrders)
         {
-            _gameState.Me = new Cell(int.Parse(inputs[1]), int.Parse(inputs[0]));
+            _gameState.Me = _gameState.CellMap[int.Parse(inputs[1]), int.Parse(inputs[0])];
             _gameState.MyLife = int.Parse(inputs[2]);
             _gameState.OpponentLife = int.Parse(inputs[3]);
             _gameState.OpponentOrders = opponentOrders;

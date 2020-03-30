@@ -40,14 +40,20 @@ namespace CodingameTests
         [Fact]
         public void UpdateGameStateLoadsLatestGameParameters()
         {
-            var inputs = new string[] { "4", "5", "3", "2" };
+            _gameState.CellMap = new Cell[,]
+            {
+                { new Cell(".", 0, 0), new Cell(".", 0, 1), new Cell("x", 0, 2) },
+                { new Cell(".", 1, 0), new Cell("x", 1, 1), new Cell(".", 1, 2) },
+                { new Cell("x", 2, 0), new Cell(".", 2, 1), new Cell(".", 2, 2) }
+            };
+            var inputs = new string[] { "1", "2", "3", "2" };
             var opponentOrders = "Wibble";
             var lines = new List<string>();
             var sut = new InputParser(_gameState, inputs, lines, _analyser);
             
             sut.UpdateGameState(inputs, opponentOrders);
 
-            _gameState.Me.Should().BeEquivalentTo(new Cell(5, 4));
+            _gameState.Me.Should().BeEquivalentTo(new Cell(".", 2, 1));
             _gameState.MyLife.Should().Be(3);
             _gameState.OpponentLife.Should().Be(2);
             _gameState.OpponentOrders.Should().Be("Wibble");

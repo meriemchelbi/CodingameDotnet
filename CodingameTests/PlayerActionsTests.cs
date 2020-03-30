@@ -23,6 +23,26 @@ namespace CodingameTests
         }
 
         [Fact]
+        public void Act_SetsVisitedFlag_WhenSubMovesOffCell()
+        {
+            _gameState.MapHeight = 3;
+            _gameState.MapWidth = 1;
+            _gameState.CellMap = new Cell[,]
+            {
+                { new Cell("x", 0, 0) },
+                { new Cell(".", 1, 0) },
+                { new Cell(".", 2, 0) }
+            };
+            _gameState.Me = _gameState.CellMap[1, 0];
+
+            _sut.Act();
+
+            _gameState.CellMap[0, 0].Visited.Should().BeFalse();
+            _gameState.CellMap[1, 0].Visited.Should().BeTrue();
+            _gameState.CellMap[2, 0].Visited.Should().BeFalse();
+        }
+
+        [Fact]
         public void SetStartingPosition_OneFreeCorner_SelectsFreeCorner()
         {
             _gameState.CellMap = new Cell[,]
