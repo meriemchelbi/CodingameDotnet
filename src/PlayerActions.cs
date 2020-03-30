@@ -31,12 +31,12 @@ namespace Codingame
 
             selected.Visited = true;
 
-            Actions.Add($"{selected.Coordinates.Item1} {selected.Coordinates.Item2}");
+            Actions.Add($"{selected.ColX} {selected.RowY}");
         }
 
         internal void Act()
         {
-            _gameState.MyCoordinates.Visited = true;
+            _gameState.Me.Visited = true;
             
             FindFreeNeighbours();
             _freeNeighbours.ForEach(c => Console.Error.WriteLine($"free neighbour {c.ToString()}"));
@@ -82,27 +82,27 @@ namespace Codingame
         {
             _freeNeighbours.Clear();
 
-            var x = _gameState.MyCoordinates.Coordinates.Item1;
-            var y = _gameState.MyCoordinates.Coordinates.Item2;
+            var x = _gameState.Me.ColX;
+            var y = _gameState.Me.RowY;
 
             // feels I could simplify this?
-            var north = x > 0
-                ? _gameState.CellMap[y , x - 1]
+            var north = y > 0
+                ? _gameState.CellMap[y - 1, x]
                 : null;
             if (north != null && north.IsFree()) _freeNeighbours.Add(north);
 
-            var south = x < (_gameState.MapHeight - 1)
-                ? _gameState.CellMap[y, x + 1]
+            var south = y < (_gameState.MapHeight - 1)
+                ? _gameState.CellMap[y + 1, x]
                 : null;
             if (south != null && south.IsFree()) _freeNeighbours.Add(south);
 
-            var east = y < (_gameState.MapWidth - 1)
-                ? _gameState.CellMap[y + 1, x]
+            var east = x < (_gameState.MapWidth - 1)
+                ? _gameState.CellMap[y, x + 1]
                 : null;
             if (east != null && east.IsFree()) _freeNeighbours.Add(east);
 
-            var west = y > 0
-                ? _gameState.CellMap[y - 1, x]
+            var west = x > 0
+                ? _gameState.CellMap[y, x - 1]
                 : null;
             if (west != null && west.IsFree()) _freeNeighbours.Add(west);
         }
@@ -131,29 +131,29 @@ namespace Codingame
         // handle cells not on the map
         private Cell FindNextCell(string direction)
         {
-            var myX = _gameState.MyCoordinates.Coordinates.Item1;
-            var myY = _gameState.MyCoordinates.Coordinates.Item2;
+            var myRow = _gameState.Me.RowY;
+            var myColumn = _gameState.Me.ColX;
             var height = _gameState.MapHeight;
             var width = _gameState.MapWidth;
 
-            if (direction.Equals("N") && myY > 0)
+            if (direction.Equals("W") && myColumn > 0)
             {
-                return _gameState.CellMap[myX, myY - 1];
+                return _gameState.CellMap[myRow, myColumn - 1];
             }
             
-            if (direction.Equals("S") && myY < height - 1)
+            if (direction.Equals("E") && myColumn < height - 1)
             {
-                return _gameState.CellMap[myX, myY + 1];
+                return _gameState.CellMap[myRow, myColumn + 1];
             }
             
-            if (direction.Equals("E") && myX < width - 1)
+            if (direction.Equals("S") && myRow < width - 1)
             {
-                return _gameState.CellMap[myX + 1, myY];
+                return _gameState.CellMap[myRow + 1, myColumn];
             }
             
-            if (direction.Equals("W") && myX > 0)
+            if (direction.Equals("N") && myRow > 0)
             {
-                return _gameState.CellMap[myX - 1, myY];
+                return _gameState.CellMap[myRow - 1, myColumn];
             }
 
             else
@@ -162,13 +162,13 @@ namespace Codingame
 
         private string GetRelativeDirection(Cell neighbour)
         {
-            return neighbour.Coordinates.Item1 < _gameState.MyCoordinates.Coordinates.Item1
+            return neighbour.RowY < _gameState.Me.RowY
                 ? "N"
-                : neighbour.Coordinates.Item1 > _gameState.MyCoordinates.Coordinates.Item1
+                : neighbour.RowY > _gameState.Me.RowY
                     ? "S"
-                    : neighbour.Coordinates.Item2 > _gameState.MyCoordinates.Coordinates.Item2
+                    : neighbour.ColX > _gameState.Me.ColX
                         ? "E"
-                        : neighbour.Coordinates.Item2 < _gameState.MyCoordinates.Coordinates.Item2
+                        : neighbour.ColX < _gameState.Me.ColX
                             ? "W"
                             : null;
         }

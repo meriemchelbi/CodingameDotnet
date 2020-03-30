@@ -27,7 +27,7 @@ namespace Codingame
         }
         private List<Sector> _sectorMap;
 
-        internal Cell MyCoordinates { get; set; }
+        internal Cell Me { get; set; }
         internal int MyLife { get; set; }
 
         internal Sector EnemySector { get; set; }

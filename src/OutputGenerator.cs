@@ -42,7 +42,7 @@ Map Height: {_gameState.MapHeight}
 Map Width: {_gameState.MapWidth}
 Cell Map:
 {printedMap}
-My position: {_gameState.MyCoordinates.ToString()}
+My position: {_gameState.Me.ToString()}
 My life: {_gameState.MyLife}
 Opponent life: {_gameState.OpponentLife}
 Opponent orders: {_gameState.OpponentOrders}

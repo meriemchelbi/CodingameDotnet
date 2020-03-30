@@ -47,7 +47,7 @@ namespace CodingameTests
             
             sut.UpdateGameState(inputs, opponentOrders);
 
-            _gameState.MyCoordinates.Should().BeEquivalentTo(new Cell(4, 5));
+            _gameState.Me.Should().BeEquivalentTo(new Cell(5, 4));
             _gameState.MyLife.Should().Be(3);
             _gameState.OpponentLife.Should().Be(2);
             _gameState.OpponentOrders.Should().Be("Wibble");

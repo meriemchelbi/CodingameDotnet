@@ -34,7 +34,8 @@ namespace CodingameTests
 
             _sut.SetStartingPosition();
 
-            _sut.Actions.Should().Contain("2 0");
+            // result should be opposite format to cell index, i.e. coordinates (Row/Y, Col/X)
+            _sut.Actions.Should().Contain("0 2");
         }
 
         [Fact]
@@ -49,7 +50,8 @@ namespace CodingameTests
 
             _sut.SetStartingPosition();
 
-            _sut.Actions.Should().Contain("0 1");
+            // result should be opposite format to cell index, i.e. coordinates (Row/Y, Col/X)
+            _sut.Actions.Should().Contain("1 0");
         }
 
         [Fact]
@@ -61,7 +63,7 @@ namespace CodingameTests
                 { new Cell(".", 1, 0), new Cell("x", 1, 1), new Cell(".", 1, 2) },
                 { new Cell("x", 2, 0), new Cell(".", 2, 1), new Cell("x", 2, 2) }
             };
-            _gameState.MyCoordinates = _gameState.CellMap[1, 0];
+            _gameState.Me = _gameState.CellMap[1, 0];
             _gameState.CellMap[0, 1].Visited = true;
 
             _sut.Act();
@@ -79,13 +81,13 @@ namespace CodingameTests
                 { new Cell("x", 1, 0), new Cell(".", 1, 1), new Cell("x", 1, 2) },
                 { new Cell("x", 2, 0), new Cell(".", 2, 1), new Cell("x", 2, 2) }
             };
-            _gameState.MyCoordinates = _gameState.CellMap[2, 1];
+            _gameState.Me = _gameState.CellMap[2, 1];
             _sut.PreviousDirection = "S";
 
             _sut.Act();
 
             _sut.Actions.Should().Contain("MOVE N");
-            _gameState.MyCoordinates.Visited.Should().BeTrue();
+            _gameState.Me.Visited.Should().BeTrue();
         }
 
         [Fact]
@@ -93,17 +95,17 @@ namespace CodingameTests
         {
             _gameState.CellMap = new Cell[,]
             {
-                { new Cell(".", 0, 0), new Cell(".", 1, 0), new Cell("x", 2, 0) },
-                { new Cell("x", 0, 1), new Cell(".", 1, 1), new Cell("x", 2, 1) },
-                { new Cell("x", 0, 2), new Cell(".", 1, 2), new Cell(".", 2, 2) }
+                { new Cell(".", 0, 0), new Cell(".", 0, 1), new Cell("x", 0, 2) },
+                { new Cell("x", 1, 0), new Cell(".", 1, 1), new Cell("x", 1, 2) },
+                { new Cell("x", 2, 0), new Cell(".", 2, 1), new Cell(".", 2, 2) }
             };
-            _gameState.MyCoordinates = _gameState.CellMap[1, 1];
+            _gameState.Me = _gameState.CellMap[1, 1];
             _sut.PreviousDirection = "S";
 
             _sut.Act();
 
             _sut.Actions.Should().Contain("MOVE S");
-            _gameState.MyCoordinates.Visited.Should().BeTrue();
+            _gameState.Me.Visited.Should().BeTrue();
         }
 
         [Fact]
@@ -115,14 +117,14 @@ namespace CodingameTests
                 { new Cell("x", 1, 0), new Cell(".", 1, 1), new Cell(".", 1, 2) },
                 { new Cell("x", 2, 0), new Cell(".", 2, 1), new Cell(".", 2, 2) }
             };
-            _gameState.MyCoordinates = _gameState.CellMap[1, 1];
+            _gameState.Me = _gameState.CellMap[1, 1];
             _sut.PreviousDirection = null;
 
             _sut.Act();
 
             _sut.Actions.Should().NotBeEmpty();
             _sut.Actions[0].Should().StartWith("MOVE");
-            _gameState.MyCoordinates.Visited.Should().BeTrue();
+            _gameState.Me.Visited.Should().BeTrue();
         }
         
         //[Fact]
