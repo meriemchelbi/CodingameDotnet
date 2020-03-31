@@ -61,21 +61,30 @@ namespace CodingameTests
         [Fact]
         public void SetStartingPosition_MultipleFreeCorners_SelectsFirstCornerWithHighestScore()
         {
-            _gameState.MapHeight = 6;
+            _gameState.MapHeight = 5;
             _gameState.MapWidth = 4;
+
+            var corner1 = new Cell(".", 0, 0);
+            var corner2 = new Cell(".", 0, 3);
+            var corner3 = new Cell(".", 4, 0);
+            var corner4 = new Cell(".", 4, 3);
+
             _gameState.CellMap = new Cell[,]
             {
-                { new Cell(".", 0, 0), new Cell(".", 0, 1), new Cell("X", 0, 2), new Cell(".", 0, 3) },
+                { corner1, new Cell(".", 0, 1), new Cell("X", 0, 2), corner2 },
                 { new Cell("x", 1, 0), new Cell("x", 1, 1), new Cell("x", 1, 2), new Cell("x", 1, 3) },
                 { new Cell("x", 2, 0), new Cell("x", 2, 1), new Cell(".", 2, 2), new Cell(".", 2, 3) },
                 { new Cell(".", 3, 0), new Cell(".", 3, 1), new Cell(".", 3, 2), new Cell(".", 3, 3) },
-                { new Cell(".", 4, 0), new Cell(".", 4, 1), new Cell(".", 4, 2), new Cell(".", 4, 3) },
-                { new Cell(".", 5, 0), new Cell("x", 5, 1), new Cell("x", 5, 2), new Cell(".", 5, 3) }
+                { corner3, new Cell("x", 4, 1), new Cell("x", 4, 2), corner4 }
             };
 
             _sut.SetStartingPosition();
-            var expectedResults = new List<string> { "0 5", "3 5" };
+            var expectedResults = new List<string> { "0 4", "3 4" };
 
+            corner1.Score.Should().Be(1);
+            corner2.Score.Should().Be(0);
+            (corner3.Score > corner2.Score).Should().BeTrue();
+            (corner4.Score > corner2.Score).Should().BeTrue();
             _sut.Actions.Should().HaveCount(1);
             _sut.Actions.Should().BeSubsetOf(expectedResults);
         }

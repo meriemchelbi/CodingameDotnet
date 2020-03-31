@@ -20,14 +20,25 @@ namespace Codingame
 
         internal void SetStartingPosition()
         {
-            // populate all free neighbours
-            var corners = GetMapCorners();
+            Cell selected = null;
+            var corners = GetFreeCorners().ToList();
 
-            var selected = corners.Where(c => c.IsFree()).FirstOrDefault() 
-                ?? GetFirstFreeCell();
-            //corners.ForEach(c => FindFreeNeighbours(c));
+            if (corners.Count == 0)
+            {
+                selected = GetFirstFreeCell();
+            }
+            if (corners.Count == 1)
+            {
+                selected = corners[0];
+            }
+            if (corners.Count > 1)
+            {
+                corners.ForEach(c => LoadNavigationParams(c));
 
-            selected.Visited = true;
+                selected = corners.OrderByDescending(c => c.Score).Take(1).First();
+            }
+
+            selected.Visited = selected != null;
 
             Actions.Add($"{selected.ColX} {selected.RowY}");
         }
@@ -45,24 +56,27 @@ namespace Codingame
             // if torpedo charge == 3 Torpedo
         }
 
-        private List<Cell> GetMapCorners()
+        private IEnumerable<Cell> GetFreeCorners()
         {
             var lastCol = _gameState.MapWidth - 1;
             var lastRow = _gameState.MapHeight - 1;
 
-            return new List<Cell>
+            var corners = new List<Cell>
             {
                 _gameState.CellMap[0, 0],
                 _gameState.CellMap[0, lastCol],
                 _gameState.CellMap[lastRow, 0],
                 _gameState.CellMap[lastRow, lastCol]
             };
+
+            return corners.Where(c => c.IsFree());
         }
 
         private Cell GetFirstFreeCell()
         {
             var width = _gameState.CellMap.GetLength(0);
             var height = _gameState.CellMap.GetLength(1);
+            var freeCells = new List<Cell>();
             
             for (int i = 0; i < width; i++)
             {
@@ -70,11 +84,14 @@ namespace Codingame
                 {
                     var cell = _gameState.CellMap[i, j];
                     if (cell.IsFree())
-                        return _gameState.CellMap[i, j];
+                    {
+                        freeCells.Add(cell);
+                        LoadNavigationParams(cell);
+                    }
                 }
             }
 
-            return null;
+            return freeCells.OrderByDescending(c => c.Score).FirstOrDefault();
         }
 
         private void FindFreeNeighbours()
@@ -100,28 +117,58 @@ namespace Codingame
             if (x > 0 && _gameState.CellMap[y, x - 1].IsFree())
                 _freeNeighbours.Add(_gameState.CellMap[y, x - 1]);
         }
-        
-        //private void FindFreeNeighbours(Cell cell)
-        //{
-        //    var x = _gameState.Me.ColX;
-        //    var y = _gameState.Me.RowY;
 
-        //    // North
-        //    if (y > 0 && _gameState.CellMap[y - 1, x].IsFree()) 
-        //        cell.FreeNeighbours.Add(_gameState.CellMap[y - 1, x]);
+        private void LoadNavigationParams(Cell cell)
+        {
+            var populated = new HashSet<Cell>();
+            cell.Score = CalculateNavigationParams(cell, populated);
+            populated.Clear();
+        }
 
-        //    // South
-        //    if (y < (_gameState.MapHeight - 1) && _gameState.CellMap[y + 1, x].IsFree()) 
-        //        cell.FreeNeighbours.Add(_gameState.CellMap[y + 1, x]);
+        private int CalculateNavigationParams(Cell cell, HashSet<Cell> populated)
+        {
+            var tempScore = 0;
 
-        //    // East
-        //    if (x < (_gameState.MapWidth - 1) && _gameState.CellMap[y, x + 1].IsFree()) 
-        //        cell.FreeNeighbours.Add(_gameState.CellMap[y, x + 1]);
+            if (!populated.Contains(cell) && cell.Score == 0)
+            {
+                FindFreeNeighbours(cell);
+                populated.Add(cell);
 
-        //    // West
-        //    if (x > 0 && _gameState.CellMap[y, x - 1].IsFree()) 
-        //        cell.FreeNeighbours.Add(_gameState.CellMap[y, x - 1]);
-        //}
+                foreach (var neighbour in cell.FreeNeighbours)
+                {
+                    CalculateNavigationParams(neighbour, populated);
+                    tempScore += neighbour.Score;
+                }
+
+                cell.Score += cell.FreeNeighbours.Count;
+            }
+
+            else tempScore = cell.Score;
+
+            return tempScore;
+        }
+
+        private void FindFreeNeighbours(Cell cell)
+        {
+            var x = cell.ColX;
+            var y = cell.RowY;
+
+            // North
+            if (y > 0 && _gameState.CellMap[y - 1, x].IsFree())
+                cell.FreeNeighbours.Add(_gameState.CellMap[y - 1, x]);
+
+            // South
+            if (y < (_gameState.MapHeight - 1) && _gameState.CellMap[y + 1, x].IsFree())
+                cell.FreeNeighbours.Add(_gameState.CellMap[y + 1, x]);
+
+            // East
+            if (x < (_gameState.MapWidth - 1) && _gameState.CellMap[y, x + 1].IsFree())
+                cell.FreeNeighbours.Add(_gameState.CellMap[y, x + 1]);
+
+            // West
+            if (x > 0 && _gameState.CellMap[y, x - 1].IsFree())
+                cell.FreeNeighbours.Add(_gameState.CellMap[y, x - 1]);
+        }
 
         private void Move()
         {

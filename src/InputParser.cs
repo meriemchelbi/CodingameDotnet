@@ -52,5 +52,7 @@ namespace Codingame
 
             // using frequency analyser work out enemy position
         }
+
+
     }
 }
