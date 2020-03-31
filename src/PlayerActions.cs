@@ -124,6 +124,8 @@ namespace Codingame
 
         private void FindFreeNeighbours(Cell cell)
         {
+            cell.FreeNeighbours.Clear();
+
             var x = cell.ColX;
             var y = cell.RowY;
 
@@ -139,7 +141,7 @@ namespace Codingame
             if (x < (_gameState.MapWidth - 1) && _gameState.CellMap[y, x + 1].IsFree())
                 cell.FreeNeighbours.Add(_gameState.CellMap[y, x + 1]);
 
-            // West
+            // West 
             if (x > 0 && _gameState.CellMap[y, x - 1].IsFree())
                 cell.FreeNeighbours.Add(_gameState.CellMap[y, x - 1]);
         }
@@ -147,6 +149,7 @@ namespace Codingame
         private void Move()
         {
             var nextCellInPath = PreviousDirection != null ? FindNextCell(PreviousDirection) : null;
+            Console.Error.WriteLine($"Next cell: {nextCellInPath}");
 
             // if I can move in current path, do so
             if (PreviousDirection != null && _gameState.Me.FreeNeighbours.Contains(nextCellInPath))
@@ -158,6 +161,11 @@ namespace Codingame
             // Move to neighbour with highest score
             else
             {
+                foreach (var neighbour in _gameState.Me.FreeNeighbours)
+                {
+                    Console.Error.WriteLine($"Free neighbour from list: {_gameState.Me.FreeNeighbours[0]}");
+                }
+                Console.Error.WriteLine($"First free neighbour: {_gameState.Me.FreeNeighbours[0]}");
                 PreviousDirection = GetRelativeDirection(_gameState.Me.FreeNeighbours[0]);
                 Actions.Add($"MOVE {PreviousDirection} TORPEDO");
             }
