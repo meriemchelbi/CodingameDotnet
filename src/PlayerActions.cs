@@ -8,14 +8,12 @@ namespace Codingame
     {
         internal List<string> Actions { get; set; }
         internal string PreviousDirection { get; set; }
-        private readonly List<Cell> _freeNeighbours;
         private GameState _gameState;
 
         internal PlayerActions(GameState gameState)
         {
             _gameState = gameState;
             Actions = new List<string>();
-            _freeNeighbours = new List<Cell>();
         }
 
         internal void SetStartingPosition()
@@ -47,9 +45,9 @@ namespace Codingame
         {
             _gameState.Me.Visited = true;
 
-            FindFreeNeighbours();
+            FindFreeNeighbours(_gameState.Me);
 
-            if (_freeNeighbours.Count > 0)
+            if (_gameState.Me.FreeNeighbours.Count > 0)
                 Move();
             else Surface();
 
@@ -92,30 +90,6 @@ namespace Codingame
             }
 
             return freeCells.OrderByDescending(c => c.Score).FirstOrDefault();
-        }
-
-        private void FindFreeNeighbours()
-        {
-            _freeNeighbours.Clear();
-
-            var x = _gameState.Me.ColX;
-            var y = _gameState.Me.RowY;
-
-            // North
-            if (y > 0 && _gameState.CellMap[y - 1, x].IsFree())
-                _freeNeighbours.Add(_gameState.CellMap[y - 1, x]);
-
-            // South
-            if (y < (_gameState.MapHeight - 1) && _gameState.CellMap[y + 1, x].IsFree())
-                _freeNeighbours.Add(_gameState.CellMap[y + 1, x]);
-
-            // East
-            if (x < (_gameState.MapWidth - 1) && _gameState.CellMap[y, x + 1].IsFree())
-                _freeNeighbours.Add(_gameState.CellMap[y, x + 1]);
-
-            // West
-            if (x > 0 && _gameState.CellMap[y, x - 1].IsFree())
-                _freeNeighbours.Add(_gameState.CellMap[y, x - 1]);
         }
 
         private void LoadNavigationParams(Cell cell)
@@ -175,15 +149,16 @@ namespace Codingame
             var nextCellInPath = PreviousDirection != null ? FindNextCell(PreviousDirection) : null;
 
             // if I can move in current path, do so
-            if (PreviousDirection != null && _freeNeighbours.Contains(nextCellInPath))
+            if (PreviousDirection != null && _gameState.Me.FreeNeighbours.Contains(nextCellInPath))
             {
                 Actions.Add($"MOVE {PreviousDirection} TORPEDO");
             }
 
-            // if only one free neighbour or can't move in current path or haven't moved before, move to first free neighbour
+            // if only one free neighbour or can't move in current path or haven't moved before, 
+            // Move to neighbour with highest score
             else
             {
-                PreviousDirection = GetRelativeDirection(_freeNeighbours[0]);
+                PreviousDirection = GetRelativeDirection(_gameState.Me.FreeNeighbours[0]);
                 Actions.Add($"MOVE {PreviousDirection} TORPEDO");
             }
         }
