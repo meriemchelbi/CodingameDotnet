@@ -20,10 +20,12 @@ namespace Codingame
 
         internal void SetStartingPosition()
         {
+            // populate all free neighbours
             var corners = GetMapCorners();
 
             var selected = corners.Where(c => c.IsFree()).FirstOrDefault() 
                 ?? GetFirstFreeCell();
+            //corners.ForEach(c => FindFreeNeighbours(c));
 
             selected.Visited = true;
 
@@ -82,26 +84,44 @@ namespace Codingame
             var x = _gameState.Me.ColX;
             var y = _gameState.Me.RowY;
 
-            var north = y > 0
-                ? _gameState.CellMap[y - 1, x]
-                : null;
-            if (north != null && north.IsFree()) _freeNeighbours.Add(north);
+            // North
+            if (y > 0 && _gameState.CellMap[y - 1, x].IsFree())
+                _freeNeighbours.Add(_gameState.CellMap[y - 1, x]);
 
-            var south = y < (_gameState.MapHeight - 1)
-                ? _gameState.CellMap[y + 1, x]
-                : null;
-            if (south != null && south.IsFree()) _freeNeighbours.Add(south);
+            // South
+            if (y < (_gameState.MapHeight - 1) && _gameState.CellMap[y + 1, x].IsFree())
+                _freeNeighbours.Add(_gameState.CellMap[y + 1, x]);
 
-            var east = x < (_gameState.MapWidth - 1)
-                ? _gameState.CellMap[y, x + 1]
-                : null;
-            if (east != null && east.IsFree()) _freeNeighbours.Add(east);
+            // East
+            if (x < (_gameState.MapWidth - 1) && _gameState.CellMap[y, x + 1].IsFree())
+                _freeNeighbours.Add(_gameState.CellMap[y, x + 1]);
 
-            var west = x > 0
-                ? _gameState.CellMap[y, x - 1]
-                : null;
-            if (west != null && west.IsFree()) _freeNeighbours.Add(west);
+            // West
+            if (x > 0 && _gameState.CellMap[y, x - 1].IsFree())
+                _freeNeighbours.Add(_gameState.CellMap[y, x - 1]);
         }
+        
+        //private void FindFreeNeighbours(Cell cell)
+        //{
+        //    var x = _gameState.Me.ColX;
+        //    var y = _gameState.Me.RowY;
+
+        //    // North
+        //    if (y > 0 && _gameState.CellMap[y - 1, x].IsFree()) 
+        //        cell.FreeNeighbours.Add(_gameState.CellMap[y - 1, x]);
+
+        //    // South
+        //    if (y < (_gameState.MapHeight - 1) && _gameState.CellMap[y + 1, x].IsFree()) 
+        //        cell.FreeNeighbours.Add(_gameState.CellMap[y + 1, x]);
+
+        //    // East
+        //    if (x < (_gameState.MapWidth - 1) && _gameState.CellMap[y, x + 1].IsFree()) 
+        //        cell.FreeNeighbours.Add(_gameState.CellMap[y, x + 1]);
+
+        //    // West
+        //    if (x > 0 && _gameState.CellMap[y, x - 1].IsFree()) 
+        //        cell.FreeNeighbours.Add(_gameState.CellMap[y, x - 1]);
+        //}
 
         private void Move()
         {

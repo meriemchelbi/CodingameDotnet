@@ -1,1 +1,1 @@
-Act method doesn't seem to set Visited to true in IDE. Tests in solution all passing
+Act method doesn't seem to set Visited to true in IDE. Tests in solution all passing. Fixed 30/03 (wasn't setting my own value but was getting set later on with a lookup)

@@ -59,19 +59,47 @@ namespace CodingameTests
         }
 
         [Fact]
-        public void SetStartingPosition_NoFreeCorners_SelectsFirstFreeCell()
+        public void SetStartingPosition_MultipleFreeCorners_SelectsFirstCornerWithHighestScore()
         {
+            _gameState.MapHeight = 6;
+            _gameState.MapWidth = 4;
             _gameState.CellMap = new Cell[,]
             {
-                { new Cell("x", 0, 0), new Cell(".", 0, 1), new Cell("x", 0, 2) },
-                { new Cell(".", 1, 0), new Cell(".", 1, 1), new Cell(".", 1, 2) },
-                { new Cell("x", 2, 0), new Cell(".", 2, 1), new Cell("x", 2, 2) }
+                { new Cell(".", 0, 0), new Cell(".", 0, 1), new Cell("X", 0, 2), new Cell(".", 0, 3) },
+                { new Cell("x", 1, 0), new Cell("x", 1, 1), new Cell("x", 1, 2), new Cell("x", 1, 3) },
+                { new Cell("x", 2, 0), new Cell("x", 2, 1), new Cell(".", 2, 2), new Cell(".", 2, 3) },
+                { new Cell(".", 3, 0), new Cell(".", 3, 1), new Cell(".", 3, 2), new Cell(".", 3, 3) },
+                { new Cell(".", 4, 0), new Cell(".", 4, 1), new Cell(".", 4, 2), new Cell(".", 4, 3) },
+                { new Cell(".", 5, 0), new Cell("x", 5, 1), new Cell("x", 5, 2), new Cell(".", 5, 3) }
             };
 
             _sut.SetStartingPosition();
+            var expectedResults = new List<string> { "0 5", "3 5" };
 
-            // result should be opposite format to cell index, i.e. coordinates (Row/Y, Col/X)
-            _sut.Actions.Should().Contain("1 0");
+            _sut.Actions.Should().HaveCount(1);
+            _sut.Actions.Should().BeSubsetOf(expectedResults);
+        }
+
+        [Fact]
+        public void SetStartingPosition_NoFreeCorners_SelectsFirstFreeCellWithHighestScore()
+        {
+            _gameState.MapHeight = 6;
+            _gameState.MapWidth = 4;
+            _gameState.CellMap = new Cell[,]
+            {
+                { new Cell("x", 0, 0), new Cell(".", 0, 1), new Cell(".", 0, 2), new Cell("x", 0, 3) },
+                { new Cell("x", 1, 0), new Cell("x", 1, 1), new Cell("x", 1, 2), new Cell("x", 1, 3) },
+                { new Cell(".", 2, 0), new Cell("x", 2, 1), new Cell(".", 2, 2), new Cell(".", 2, 3) },
+                { new Cell(".", 3, 0), new Cell("x", 3, 1), new Cell(".", 3, 2), new Cell(".", 3, 3) },
+                { new Cell(".", 4, 0), new Cell("x", 4, 1), new Cell("x", 4, 2), new Cell("x", 4, 3) },
+                { new Cell("x", 5, 0), new Cell("x", 5, 1), new Cell("x", 5, 2), new Cell("x", 5, 3) }
+            };
+
+            _sut.SetStartingPosition();
+            var expectedResults = new List<string> { "2 2", "2 3", "3 2", "3 3" };
+
+            _sut.Actions.Should().HaveCount(1);
+            _sut.Actions.Should().BeSubsetOf(expectedResults);
         }
 
         [Fact]
@@ -147,17 +175,11 @@ namespace CodingameTests
             _sut.Actions[0].Should().EndWith("TORPEDO");
             _gameState.Me.Visited.Should().BeTrue();
         }
-        
+
         //[Fact]
         //public void Act_MultipleFreeNeighbours_NoPreviousDirection_MoveToHighestScore()
         //{
         //    // optimisation
-        //}
-
-        //[Fact]
-        //public void SetStartingPosition_MultipleFreeCorners_SelectsCornerWithHighestScore()
-        //{
-        //    //optimisation
         //}
 
         //[Fact]

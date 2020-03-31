@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Codingame
 {
@@ -10,19 +11,29 @@ namespace Codingame
         internal int ColX { get; set; }
         internal string Value { get; set; }
         internal bool Visited { get; set; }
-        internal int Score { get; set; }
+        //internal List<Cell> FreeNeighbours { get; set; }
+        //internal int Score 
+        //{
+        //    get
+        //    {
+        //        if (_score == 0)
+        //            ComputeNavigationScore();
+        //        return _score;
+        //    }
+        //}
+        private int _score;
 
-        internal Cell(int rowY, int columnX)
-        {
-            RowY = rowY;
-            ColX = columnX;
-        }
-        
         internal Cell(string value, int rowY, int columnX)
         {
             Value = value;
             RowY = rowY;
             ColX = columnX;
+            _score = 0;
+        }
+
+        public override string ToString()
+        {
+            return $"Column/X {ColX}, Row/Y: {RowY}, Visited: {Visited}, Value: {Value}, Is free? {IsFree()}";
         }
 
         internal bool Equals(Cell cell1, Cell cell2)
@@ -31,15 +42,19 @@ namespace Codingame
                 && (cell1.ColX == cell2.ColX);
         }
 
-        public override string ToString()
-        {
-            return $"Column/X {ColX}, Row/Y: {RowY}, Visited: {Visited}, Value: {Value}, Is free? {IsFree()}";
-        }
-
         internal bool IsFree()
         {
             return Value == "." && !Visited;
         }
+
+        //private void ComputeNavigationScore()
+        //{
+        //    foreach (var neighbour in FreeNeighbours)
+        //    {
+        //        _score += neighbour.Score;
+        //    }
+        //    _score += FreeNeighbours.Count;
+        //}
     }
 
 }
