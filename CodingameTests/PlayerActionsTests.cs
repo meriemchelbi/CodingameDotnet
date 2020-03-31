@@ -106,7 +106,7 @@ namespace CodingameTests
 
             _sut.Act();
 
-            _sut.Actions.Should().Contain("MOVE N");
+            _sut.Actions.Should().Contain("MOVE N TORPEDO");
             _gameState.Me.Visited.Should().BeTrue();
         }
 
@@ -124,7 +124,7 @@ namespace CodingameTests
 
             _sut.Act();
 
-            _sut.Actions.Should().Contain("MOVE S");
+            _sut.Actions.Should().Contain("MOVE S TORPEDO");
             _gameState.Me.Visited.Should().BeTrue();
         }
 
@@ -144,6 +144,7 @@ namespace CodingameTests
 
             _sut.Actions.Should().NotBeEmpty();
             _sut.Actions[0].Should().StartWith("MOVE");
+            _sut.Actions[0].Should().EndWith("TORPEDO");
             _gameState.Me.Visited.Should().BeTrue();
         }
         

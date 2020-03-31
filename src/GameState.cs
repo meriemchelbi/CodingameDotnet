@@ -36,6 +36,7 @@ namespace Codingame
 
         internal bool PlayerStartsFirst { get; set; }
 
+        internal int TorpedoCharge { get; set; }
 
         internal void LoadSectors()
         {

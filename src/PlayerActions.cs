@@ -39,6 +39,8 @@ namespace Codingame
             if (_freeNeighbours.Count > 0)
                 Move();
             else Surface();
+
+            // if torpedo charge == 3 Torpedo
         }
 
         private List<Cell> GetMapCorners()
@@ -108,14 +110,14 @@ namespace Codingame
             // if I can move in current path, do so
             if (PreviousDirection != null && _freeNeighbours.Contains(nextCellInPath))
             {
-                Actions.Add($"MOVE {PreviousDirection}");
+                Actions.Add($"MOVE {PreviousDirection} TORPEDO");
             }
 
             // if only one free neighbour or can't move in current path or haven't moved before, move to first free neighbour
             else
             {
                 PreviousDirection = GetRelativeDirection(_freeNeighbours[0]);
-                Actions.Add($"MOVE {PreviousDirection}");
+                Actions.Add($"MOVE {PreviousDirection} TORPEDO");
             }
         }
 
@@ -176,7 +178,10 @@ namespace Codingame
 
         private void Torpedo()
         {
-            // do the thing & add to Actions
+            // Check for enemy position
+            // Compile torpedo action
+            // add to Actions
+            // re-set charges
         }
     }
 }
