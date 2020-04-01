@@ -23,6 +23,7 @@ namespace Codingame
 
             if (corners.Count == 0)
             {
+                // possible optimisation - get highest scoring free neighbour of corners
                 selected = GetFirstFreeCell();
             }
             if (corners.Count == 1)
@@ -45,7 +46,7 @@ namespace Codingame
         {
             _gameState.Me.Visited = true;
 
-            FindFreeNeighbours(_gameState.Me);
+            LoadNavigationParams(_gameState.Me);
 
             if (_gameState.Me.FreeNeighbours.Count > 0)
                 Move();
@@ -95,14 +96,12 @@ namespace Codingame
         private void LoadNavigationParams(Cell cell)
         {
             var populated = new HashSet<Cell>();
-            cell.Score = CalculateNavigationParams(cell, populated);
+            CalculateNavigationParams(cell, populated);
             populated.Clear();
         }
 
-        private int CalculateNavigationParams(Cell cell, HashSet<Cell> populated)
+        private void CalculateNavigationParams(Cell cell, HashSet<Cell> populated)
         {
-            var tempScore = 0;
-
             if (!populated.Contains(cell) && cell.Score == 0)
             {
                 FindFreeNeighbours(cell);
@@ -111,15 +110,9 @@ namespace Codingame
                 foreach (var neighbour in cell.FreeNeighbours)
                 {
                     CalculateNavigationParams(neighbour, populated);
-                    tempScore += neighbour.Score;
+                    cell.Score += neighbour.Score;
                 }
-
-                cell.Score += cell.FreeNeighbours.Count;
             }
-
-            else tempScore = cell.Score;
-
-            return tempScore;
         }
 
         private void FindFreeNeighbours(Cell cell)
@@ -144,6 +137,8 @@ namespace Codingame
             // West 
             if (x > 0 && _gameState.CellMap[y, x - 1].IsFree())
                 cell.FreeNeighbours.Add(_gameState.CellMap[y, x - 1]);
+
+            cell.Score += cell.FreeNeighbours.Count;
         }
 
         private void Move()
@@ -165,8 +160,13 @@ namespace Codingame
                 {
                     Console.Error.WriteLine($"Free neighbour from list: {_gameState.Me.FreeNeighbours[0]}");
                 }
+                
                 Console.Error.WriteLine($"First free neighbour: {_gameState.Me.FreeNeighbours[0]}");
-                PreviousDirection = GetRelativeDirection(_gameState.Me.FreeNeighbours[0]);
+                
+                var highestScoringNeighbour = _gameState.Me.FreeNeighbours.OrderByDescending(n => n.Score).FirstOrDefault();
+
+                //Something wrong with this
+                PreviousDirection = GetRelativeDirection(highestScoringNeighbour);
                 Actions.Add($"MOVE {PreviousDirection} TORPEDO");
             }
         }

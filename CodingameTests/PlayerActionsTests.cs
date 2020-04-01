@@ -81,10 +81,11 @@ namespace CodingameTests
             _sut.SetStartingPosition();
             var expectedResults = new List<string> { "0 4", "3 4" };
 
-            corner1.Score.Should().Be(1);
             corner2.Score.Should().Be(0);
             (corner3.Score > corner2.Score).Should().BeTrue();
+            (corner3.Score > corner1.Score).Should().BeTrue();
             (corner4.Score > corner2.Score).Should().BeTrue();
+            (corner4.Score > corner1.Score).Should().BeTrue();
             _sut.Actions.Should().HaveCount(1);
             _sut.Actions.Should().BeSubsetOf(expectedResults);
         }
@@ -166,7 +167,7 @@ namespace CodingameTests
         }
 
         [Fact]
-        public void Act_MultipleFreeNeighbours_NoPreviousDirection_MoveToFirstFreeNeighbour()
+        public void Act_MultipleFreeNeighbours_NoPreviousDirection_MoveToHighestScore()
         {
             _gameState.CellMap = new Cell[,]
             {
@@ -179,24 +180,12 @@ namespace CodingameTests
 
             _sut.Act();
 
-            _sut.Actions.Should().NotBeEmpty();
-            _sut.Actions[0].Should().StartWith("MOVE");
-            _sut.Actions[0].Should().EndWith("TORPEDO");
+            var expectedResults = new List<string> { "MOVE S TORPEDO", "MOVE E TORPEDO" };
+
+            _sut.Actions.Should().HaveCount(1);
+            _sut.Actions.Should().BeSubsetOf(expectedResults);
             _gameState.Me.Visited.Should().BeTrue();
         }
-
-        //[Fact]
-        //public void Act_MultipleFreeNeighbours_NoPreviousDirection_MoveToHighestScore()
-        //{
-        //    // optimisation
-        //}
-
-        //[Fact]
-        //public void SetStartingPosition_FreeCornersLowScores_SelectsFirstFreeCell()
-        //{
-        //    //optimisation
-        //}
-
 
     }
 }
