@@ -19,5 +19,15 @@ namespace Codingame
         internal string OpponentOrders { get; set; }
         internal bool PlayerStartsFirst { get; set; }
         internal int TorpedoCharge { get; set; }
+
+        internal GameState()
+        {
+
+        }
+
+        internal void LoadSectors()
+        {
+            // Implement when you need it!
+        }
     }
 }
