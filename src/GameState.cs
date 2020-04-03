@@ -33,7 +33,6 @@ namespace Codingame
         internal string OpponentOrders { get; set; }
         internal bool PlayerStartsFirst { get; set; }
 
-
         internal GameState()
         {
 
