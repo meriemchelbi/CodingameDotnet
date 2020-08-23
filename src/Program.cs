@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Codingame
 {
@@ -6,15 +7,43 @@ namespace Codingame
     {
         static void Main(string[] args)
         {
-            // TODO introduce GetInput method that splits the input into component parts.
-            // Change BuildGraph to take these inputs, and KillTheVirus to take the graph as single argument
-            // That way, you can bypass GetInput in your tests and just new up a collection
-            KillTheVirus(args);
+            string[] inputs;
 
-            static string KillTheVirus(string[] args)
+            inputs = Console.ReadLine().Split(' ');
+
+            var noOfNodes = int.Parse(inputs[0]);
+            Console.Error.WriteLine($"No of nodes: {noOfNodes}");
+
+            var noOfLinks = int.Parse(inputs[1]);
+            Console.Error.WriteLine($"No of Links: {noOfLinks}");
+
+            var noOfGateways = int.Parse(inputs[2]);
+            Console.Error.WriteLine($"No of gateways: {noOfGateways}");
+
+            var links = new List<(int, int)>();
+            for (int i = 0; i < noOfLinks; i++)
+            {
+                var link = Console.ReadLine().Split(' ');
+                var node1 = int.Parse(link[0]);
+                var node2 = int.Parse(link[1]);
+                links.Add((node1, node2));
+                Console.Error.WriteLine($"Nodes {node1} and node {node2} are linked");
+            }
+
+            var gatewayIndexes = new List<int>();
+            for (int i = 0; i < noOfGateways; i++)
+            {
+                var gatewayIndex = int.Parse(Console.ReadLine());
+                gatewayIndexes.Add(gatewayIndex);
+                Console.Error.WriteLine($"Gateway index: {gatewayIndex}");
+            }
+
+            KillTheVirus(noOfNodes, links, gatewayIndexes);
+
+            static string KillTheVirus(int noOfNodes, List<(int, int)> links, List<int> gatewayIndexes)
             {
                 var skynet = new Graph();
-                skynet.BuildGraph(args);
+                skynet.BuildGraph(noOfNodes, links, gatewayIndexes);
 
                 while (true)
                 {

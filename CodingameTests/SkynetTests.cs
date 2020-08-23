@@ -1,5 +1,6 @@
 using Codingame;
-using System;
+using CodingameTests;
+using FluentAssertions;
 using System.Collections.Generic;
 using Xunit;
 
@@ -8,7 +9,7 @@ namespace DojoTemplateTestProject
     public class Skynet1
     {
         [Fact]
-        public void CanBuildGraph()
+        public void BuildGraph_CanBuildGraph()
         {
             var standinput = new Queue<string>(new[]
             {
@@ -21,33 +22,24 @@ namespace DojoTemplateTestProject
                 "0" // position of agent
            });
 
-            Func<string> readLine = () => standinput.Dequeue();
+            var inputs = new GraphInputs();
+            inputs.GenerateGraphInputs(standinput);
 
-            var initialInputs = readLine().Split(' ');
             var skynet = new Graph();
+            skynet.BuildGraph(inputs.NoOfNodes, inputs.Links, inputs.GatewayIndexes);
 
-            var noOfNodes = int.Parse(initialInputs[0]);
-            skynet.AddNodes(noOfNodes);
-
-            var noOfLinks = int.Parse(initialInputs[1]);
-            for (int i = 0; i < noOfLinks; i++)
+            skynet.Nodes.Should().HaveCount(4);
+            for (int i = 0; i < 3; i++)
             {
-                var link = readLine().Split(' ');
-                var node1 = int.Parse(link[0]);
-                var node2 = int.Parse(link[1]);
-                skynet.AddLink(node1, node2);
+                skynet.Nodes[i].Id.Should().Be(i);
             }
-
-            var noOfGateways = int.Parse(initialInputs[2]);
-            for (int i = 0; i < noOfGateways; i++)
-            {
-                var gatewayIndex = int.Parse(readLine());
-                skynet.Nodes[gatewayIndex].IsGateway = true;
-            }
-
-            var virus = new Virus();
-            var virusPosition = int.Parse(readLine());
-            virus.CurrentPosition = skynet.Nodes[virusPosition];
+            skynet.Nodes[3].IsGateway.Should().BeTrue();
+            skynet.Links.Should().HaveCount(4);
+            skynet.Links.Should().Contain((1, 3));
+            skynet.Links.Should().Contain((2, 3));
+            skynet.Links.Should().Contain((0, 1));
+            skynet.Links.Should().Contain((0, 2));
+            skynet.Virus.Should().NotBeNull();
         }
     }
 }
