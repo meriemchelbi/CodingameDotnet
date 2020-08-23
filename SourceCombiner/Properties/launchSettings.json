@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SourceCombiner": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\merie\\Documents\\GitHub\\CodingameDotnet\\src\\ C:\\Users\\merie\\Documents\\GitHub\\CodinGameOutput2020\\CodinGameSolution.cs"
+    }
+  }
+}
