@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -60,10 +59,13 @@ namespace SourceCombiner
                     var isUsingDir = trimmedLine.StartsWith(openingTag) && trimmedLine.EndsWith(";");
                     var isAssemblyAttribute = trimmedLine.StartsWith("[assembly:");
 
-                    if (!string.IsNullOrWhiteSpace(sourceLine) && !isUsingDir && !isAssemblyAttribute)
+                    if (trimmedLine.StartsWith("namespace") && trimmedLine.EndsWith("Codingame"))
                     {
-                        sb.AppendLine(sourceLine);
+                        sb.AppendLine("namespace CodinGameOutput");
+                        continue;
                     }
+                    if (!string.IsNullOrWhiteSpace(sourceLine) && !isUsingDir && !isAssemblyAttribute)
+                        sb.AppendLine(sourceLine);
                 }
             }
 
