@@ -226,3 +226,4 @@ project.lock.json
 *.cache
 *.targets
 .vs/Codingame/v16/.suo
+*.sqlite

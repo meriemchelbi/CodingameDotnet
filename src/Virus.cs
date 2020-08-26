@@ -8,7 +8,10 @@ namespace Codingame
 
         public int GetCurrentPosition()
         {
-            return int.Parse(Console.ReadLine());
+            var currentPosition = int.Parse(Console.ReadLine());
+
+            Console.Error.WriteLine($"Agent's current position is: {currentPosition}");
+            return currentPosition;
         }
     }
 }

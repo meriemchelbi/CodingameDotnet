@@ -2,7 +2,7 @@
   "profiles": {
     "SourceCombiner": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\merie\\Documents\\GitHub\\CodingameDotnet\\src\\ C:\\Users\\merie\\Documents\\GitHub\\CodingameDotnet\\SourceCombiner\\CodinGameOutput\\SolutionOutput.cs"
+      "commandLineArgs": "C:\\Users\\merie\\Documents\\GitHub\\CodingameDotnet\\src\\ C:\\Users\\merie\\Documents\\GitHub\\CodingameDotnet\\CodingameOutput\\SolutionOutput.cs"
     }
   }
 }

@@ -49,7 +49,7 @@ namespace Codingame
                 {
                     var virusPosition = skynet.Virus.GetCurrentPosition();
                     skynet.Virus.CurrentPosition = skynet.Nodes[virusPosition];
-                    Console.WriteLine("2 3");
+                    Console.WriteLine("1 2");
                 }
             }
         }
