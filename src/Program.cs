@@ -44,12 +44,16 @@ namespace Codingame
             {
                 var skynet = new Graph();
                 skynet.BuildGraph(noOfNodes, links, gatewayIndexes);
+                var game = new Game(skynet);
 
                 while (true)
                 {
                     var virusPosition = skynet.Virus.GetCurrentPosition();
                     skynet.Virus.CurrentPosition = skynet.Nodes[virusPosition];
-                    Console.WriteLine("1 2");
+
+                    var nextMove = game.FindTargetLink();
+
+                    Console.WriteLine(nextMove);
                 }
             }
         }

@@ -6,7 +6,7 @@ using Xunit;
 
 namespace DojoTemplateTestProject
 {
-    public class Skynet1
+    public class SkynetTests
     {
         [Fact]
         public void BuildGraph_CanBuildGraph()
