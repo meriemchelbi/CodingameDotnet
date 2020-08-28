@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Codingame
 {
@@ -14,7 +15,41 @@ namespace Codingame
 
         public string FindTargetLink()
         {
-            return string.Empty;
+            var agentPosition = _skynet.Virus.CurrentPosition;
+            var gateway = _skynet.Nodes.FirstOrDefault(n => n.IsGateway);
+
+            var queue = new Queue<Node>();
+            queue.Enqueue(agentPosition);
+
+            var map = new Dictionary<Node, Node>();
+
+            while (queue.Count > 0)
+            {
+                var node = queue.Dequeue();
+                foreach (var neighbour in node.Neighbours)
+                {
+                    if (map.ContainsKey(neighbour))
+                        continue;
+
+                    map.Add(neighbour, node);
+                    queue.Enqueue(neighbour);
+                }
+            }
+
+            var path = new List<Node>();
+            var current = gateway;
+            while (current != agentPosition)
+            {
+                path.Add(current);
+                current = map[current];
+            }
+
+            path.Add(agentPosition);
+            path.Reverse();
+
+            var result = $"{path[0].Id} {path[1].Id}";
+
+            return result;
         }
     }
 }

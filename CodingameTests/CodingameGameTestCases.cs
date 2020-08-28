@@ -58,8 +58,7 @@ namespace CodingameTests
 
             var result = game.FindTargetLink();
 
-            //result.Should().Be("1 2");
-            // assert should be either 1 3 or 2 3
+            result.Should().ContainAny("1 3", "2 3");
         }
     }
 }

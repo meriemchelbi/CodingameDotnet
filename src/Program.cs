@@ -48,8 +48,10 @@ namespace Codingame
 
                 while (true)
                 {
-                    var virusPosition = skynet.Virus.GetCurrentPosition();
-                    skynet.Virus.CurrentPosition = skynet.Nodes[virusPosition];
+                    var currentPosition = int.Parse(Console.ReadLine());
+                    Console.Error.WriteLine($"Agent's current position is: {currentPosition}");
+
+                    skynet.Virus.CurrentPosition = skynet.Nodes[currentPosition];
 
                     var nextMove = game.FindTargetLink();
 
