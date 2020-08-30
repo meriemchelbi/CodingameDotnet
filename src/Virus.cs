@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Codingame
+﻿namespace Codingame
 {
     public class Virus
     {

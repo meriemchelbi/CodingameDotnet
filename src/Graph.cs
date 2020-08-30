@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Codingame
 {
@@ -36,7 +35,6 @@ namespace Codingame
                 Nodes.Add(new Node(i));
         }
 
-        // TODO Refactor BuildGraph to take in specific inputs
         public void BuildGraph(int noOfNodes, List<(int, int)> links, List<int> gatewayIndexes)
         {
             AddNodes(noOfNodes);

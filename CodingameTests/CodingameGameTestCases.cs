@@ -1,8 +1,6 @@
 ﻿using Codingame;
 using FluentAssertions;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace CodingameTests
@@ -26,6 +24,7 @@ namespace CodingameTests
 
             var skynet = new Graph();
             skynet.BuildGraph(inputs.NoOfNodes, inputs.Links, inputs.GatewayIndexes);
+            skynet.Virus.CurrentPosition = skynet.Nodes[inputs.VirusPosition];
 
             var game = new Game(skynet);
 
@@ -53,6 +52,7 @@ namespace CodingameTests
 
             var skynet = new Graph();
             skynet.BuildGraph(inputs.NoOfNodes, inputs.Links, inputs.GatewayIndexes);
+            skynet.Virus.CurrentPosition = skynet.Nodes[inputs.VirusPosition];
 
             var game = new Game(skynet);
 

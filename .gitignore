@@ -227,3 +227,4 @@ project.lock.json
 *.targets
 .vs/Codingame/v16/.suo
 *.sqlite
+*.manifest
