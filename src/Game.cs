@@ -37,13 +37,15 @@ namespace Codingame
 
             var path = new List<Node>();
             var current = gateway;
+
             while (current != agentPosition)
             {
                 path.Add(current);
                 current = map[current];
             }
 
-            path.Add(agentPosition);
+            if (path.Count == 1) // if only one element in path then the agent is adjacent to the gateway
+                path.Add(current);
             path.Reverse();
 
             var result = $"{path[0].Id} {path[1].Id}";
