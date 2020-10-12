@@ -35,10 +35,10 @@ namespace DojoTemplateTestProject
             }
             skynet.Nodes[3].IsGateway.Should().BeTrue();
             skynet.Links.Should().HaveCount(4);
-            skynet.Links.Should().Contain((1, 3));
-            skynet.Links.Should().Contain((2, 3));
-            skynet.Links.Should().Contain((0, 1));
-            skynet.Links.Should().Contain((0, 2));
+            skynet.Links.Should().Contain(l => l.Origin.Id == 1 && l.Destination.Id == 3);
+            skynet.Links.Should().Contain(l => l.Origin.Id == 2 && l.Destination.Id == 3);
+            skynet.Links.Should().Contain(l => l.Origin.Id == 0 && l.Destination.Id == 1);
+            skynet.Links.Should().Contain(l => l.Origin.Id == 0 && l.Destination.Id == 2);
             skynet.Virus.Should().NotBeNull();
         }
     }

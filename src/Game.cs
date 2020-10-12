@@ -38,6 +38,7 @@ namespace Codingame
 
             var resultPath = paths[closestGateway];
             var result = $"{resultPath[0].Id} {resultPath[1].Id}";
+            _skynet.SeverLink(resultPath);
 
             return result;
         }
