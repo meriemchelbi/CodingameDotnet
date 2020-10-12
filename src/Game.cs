@@ -14,8 +14,37 @@ namespace Codingame
 
         public string FindTargetLink()
         {
+            var gateways = _skynet.GetGateways().ToList();
+            var paths = new Dictionary<Node, List<Node>>();
+            
+            foreach (var gateway in gateways)
+            {
+                var path = GetPathToGateway(gateway);
+                paths[gateway] = path;
+            }
+
+            Node closestGateway = null;
+            var shortestPath = int.MaxValue;
+
+            foreach (var path in paths)
+            {
+                var pathLength = path.Value.Count;
+                if (pathLength < shortestPath)
+                {
+                    shortestPath = pathLength;
+                    closestGateway = path.Key;
+                }
+            }
+
+            var resultPath = paths[closestGateway];
+            var result = $"{resultPath[0].Id} {resultPath[1].Id}";
+
+            return result;
+        }
+
+        private List<Node> GetPathToGateway(Node gateway)
+        {
             var agentPosition = _skynet.Virus.CurrentPosition;
-            var gateway = _skynet.Nodes.FirstOrDefault(n => n.IsGateway);
 
             var queue = new Queue<Node>();
             queue.Enqueue(agentPosition);
@@ -48,9 +77,7 @@ namespace Codingame
                 path.Add(current);
             path.Reverse();
 
-            var result = $"{path[0].Id} {path[1].Id}";
-
-            return result;
+            return path;
         }
     }
 }

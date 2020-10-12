@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Codingame
 {
@@ -53,6 +54,11 @@ namespace Codingame
             }
 
             Virus = new Virus();
+        }
+
+        public IEnumerable<Node> GetGateways()
+        {
+            return Nodes.Where(n => n.IsGateway);
         }
     }
 }
