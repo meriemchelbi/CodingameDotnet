@@ -48,22 +48,17 @@ namespace Codingame
             return Nodes.FirstOrDefault(n => n.Id == nodeId);
         }
 
-        public Link GetLink(int origin, int destination)
+        public Link GetLink(int originId, int destinationId)
         {
-            return Links.FirstOrDefault(l => l.Origin.Id == origin 
-                                          && l.Destination.Id == destination);
+            return Links.FirstOrDefault(l => l.Origin.Id == originId 
+                                          && l.Destination.Id == destinationId)
+                ?? Links.FirstOrDefault(l => l.Origin.Id == destinationId
+                                          && l.Destination.Id == originId);
         }
 
         public IEnumerable<Node> GetGateways()
         {
             return Nodes.Where(n => n.IsGateway);
-        }
-
-        public void SeverLink(List<Node> path)
-        {
-            var linkOrigin = path[0].Id;
-            var linkDestination = path[1].Id;
-            Links.Remove(GetLink(linkOrigin, linkDestination));
         }
 
         private void AddLinks(List<(int, int)> links)

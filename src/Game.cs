@@ -28,19 +28,44 @@ namespace Codingame
 
             foreach (var path in paths)
             {
+                var gatewayLink = _skynet.GetLink(path.Value[0].Id, path.Value[1].Id);
+                
+                if (gatewayLink.IsSevered)
+                    continue;
+                
                 var pathLength = path.Value.Count;
-                if (pathLength < shortestPath)
+                if (pathLength <= shortestPath)
                 {
+                    if (AgentAdjacent(path))
+                        return ComputeResult(path.Value);
+                    
                     shortestPath = pathLength;
                     closestGateway = path.Key;
                 }
             }
 
             var resultPath = paths[closestGateway];
-            var result = $"{resultPath[0].Id} {resultPath[1].Id}";
-            _skynet.SeverLink(resultPath);
 
-            return result;
+            return ComputeResult(resultPath);
+        }
+
+        private string ComputeResult(List<Node> path)
+        {
+            var resultOriginId = path[0].Id;
+            var resultDestinationId = path[1].Id;
+
+            _skynet.GetLink(resultOriginId, resultDestinationId).IsSevered = true;
+
+            return $"{resultOriginId} {resultDestinationId}";
+        }
+
+        private bool AgentAdjacent(KeyValuePair<Node, List<Node>> path)
+        {
+            var agentPosition = _skynet.Virus.CurrentPosition;
+            var gatewayPosition = path.Key;
+
+            return path.Value[0] == agentPosition && path.Value[1] == gatewayPosition
+                || path.Value[0]== gatewayPosition && path.Value[1] == agentPosition;
         }
 
         private List<Node> GetPathToGateway(Node gateway)
@@ -50,7 +75,7 @@ namespace Codingame
             var queue = new Queue<Node>();
             queue.Enqueue(agentPosition);
 
-            var map = new Dictionary<Node, Node>();
+            var map = new Dictionary<Node, Link>();
 
             while (queue.Count > 0)
             {
@@ -60,8 +85,14 @@ namespace Codingame
                     if (map.ContainsKey(neighbour))
                         continue;
 
-                    map.Add(neighbour, node);
-                    queue.Enqueue(neighbour);
+                    var linkToNeighbour = _skynet.GetLink(node.Id, neighbour.Id);
+                    if (!linkToNeighbour.IsSevered)
+                    {
+                        map.Add(neighbour, linkToNeighbour);
+                        queue.Enqueue(neighbour);
+                    }
+                    else
+                        continue;
                 }
             }
 
@@ -70,8 +101,20 @@ namespace Codingame
 
             while (current != agentPosition)
             {
-                path.Add(current);
-                current = map[current];
+                if (map[current].IsSevered)
+                {
+                    current = map[current].Origin == current
+                        ? map[current].Destination
+                        : map[current].Origin;
+                    continue;
+                }
+                else
+                {
+                    path.Add(current);
+                    current = map[current].Origin == current
+                        ? map[current].Destination
+                        : map[current].Origin;
+                }
             }
 
             if (path.Count == 1) // if only one element in path then the agent is adjacent to the gateway
