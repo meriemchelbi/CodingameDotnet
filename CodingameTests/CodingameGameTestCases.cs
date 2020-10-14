@@ -219,7 +219,7 @@ namespace CodingameTests
 
             var result = game.FindTargetLink();
 
-            result.Should().BeOneOf("2 0");
+            result.Should().BeOneOf("2 0", "35 28");
         }
         
         [Fact]
