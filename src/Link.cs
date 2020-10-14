@@ -8,7 +8,6 @@ namespace Codingame
     {
         public Node Origin { get; }
         public Node Destination { get; }
-        public bool IsSevered { get; set; }
 
         public Link(Node origin, Node destination)
         {

@@ -30,9 +30,6 @@ namespace Codingame
             {
                 var gatewayLink = _skynet.GetLink(path.Value[0].Id, path.Value[1].Id);
                 
-                if (gatewayLink.IsSevered)
-                    continue;
-
                 // if agent is next to the gateway
                 if (path.Value[1] == _skynet.Virus.CurrentPosition)
                     return ComputeResult(path.Value);
@@ -55,7 +52,8 @@ namespace Codingame
             var resultOriginId = path[0].Id;
             var resultDestinationId = path[1].Id;
 
-            _skynet.GetLink(resultOriginId, resultDestinationId).IsSevered = true;
+            var linkToSever = _skynet.GetLink(resultOriginId, resultDestinationId);
+            _skynet.SeverLink(linkToSever);
 
             return $"{resultOriginId} {resultDestinationId}";
         }
@@ -77,14 +75,12 @@ namespace Codingame
                     if (map.ContainsKey(neighbour))
                         continue;
 
-                    var linkToNeighbour = _skynet.GetLink(node.Id, neighbour.Id);
-                    if (!linkToNeighbour.IsSevered)
+                    else
                     {
+                        var linkToNeighbour = _skynet.GetLink(node.Id, neighbour.Id);
                         map.Add(neighbour, linkToNeighbour);
                         queue.Enqueue(neighbour);
                     }
-                    else
-                        continue;
                 }
             }
 
@@ -93,20 +89,10 @@ namespace Codingame
 
             while (current != agentPosition)
             {
-                if (map[current].IsSevered)
-                {
-                    current = map[current].Origin == current
-                        ? map[current].Destination
-                        : map[current].Origin;
-                    continue;
-                }
-                else
-                {
-                    path.Add(current);
-                    current = map[current].Origin == current
-                        ? map[current].Destination
-                        : map[current].Origin;
-                }
+                path.Add(current);
+                current = map[current].Origin == current
+                    ? map[current].Destination
+                    : map[current].Origin;
             }
 
             if (path.Count == 1) // if only one element in path then the agent is adjacent to the gateway

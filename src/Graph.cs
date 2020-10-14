@@ -61,6 +61,16 @@ namespace Codingame
             return Nodes.Where(n => n.IsGateway);
         }
 
+        public void SeverLink(Link linkToSever)
+        {
+            var origin = linkToSever.Origin;
+            var destination = linkToSever.Destination;
+
+            Links.Remove(linkToSever);
+            origin.Neighbours.Remove(destination);
+            destination.Neighbours.Remove(origin);
+        }
+
         private void AddLinks(List<(int, int)> links)
         {
             for (int i = 0; i < links.Count; i++)

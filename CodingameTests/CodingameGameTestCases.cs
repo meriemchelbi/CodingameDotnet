@@ -319,7 +319,7 @@ namespace CodingameTests
             var skynet = new Graph();
             skynet.BuildGraph(inputs.NoOfNodes, inputs.Links, inputs.GatewayIndexes);
             skynet.Virus.CurrentPosition = skynet.Nodes[inputs.VirusPosition];
-            skynet.GetLink(0, 2).IsSevered = true;
+            skynet.SeverLink(skynet.GetLink(0, 2));
 
             var game = new Game(skynet);
 
