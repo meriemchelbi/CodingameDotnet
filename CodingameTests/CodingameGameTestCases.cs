@@ -327,5 +327,246 @@ namespace CodingameTests
 
             result.Should().BeOneOf("35 28");
         }
+        
+        [Fact]
+        public void TripleStar_38Nodes_Round3()
+        {
+            var standinput = new Queue<string>(new[]
+            {
+                "38 79 3", // no of nodes, no of links, no of gateways
+                "28 36",
+                "0 2",
+                "3 34",
+                "29 21",
+                "37 35",
+                "28 32",
+                "0 10",
+                "37 2",
+                "4 5",
+                "13 14",
+                "34 35",
+                "27 19",
+                "28 34",
+                "30 31",
+                "18 26",
+                "0 9",
+                "7 8",
+                "18 24",
+                "18 23",
+                "0 5",
+                "16 17",
+                "29 30",
+                "10 11",
+                "0 12",
+                "15 16",
+                "0 11",
+                "0 17",
+                "18 22",
+                "23 24",
+                "0 7",
+                "35 23",
+                "22 23",
+                "1 2",
+                "0 13",
+                "18 27",
+                "25 26",
+                "32 33",
+                "28 31",
+                "24 25",
+                "28 35",
+                "21 22",
+                "4 33",
+                "28 29",
+                "36 22",
+                "18 25",
+                "37 23",
+                "18 21",
+                "5 6",
+                "19 20",
+                "0 14",
+                "35 36",
+                "9 10",
+                "0 6",
+                "20 21",
+                "0 3",
+                "33 34",
+                "14 15",
+                "28 33",
+                "11 12",
+                "12 13",
+                "17 1",
+                "18 19",
+                "36 29",
+                "0 4",
+                "0 15",
+                "0 1",
+                "18 20",
+                "2 3",
+                "0 16",
+                "8 9",
+                "0 8",
+                "26 27",
+                "28 30",
+                "3 4",
+                "31 32",
+                "6 7",
+                "37 1",
+                "37 24",
+                "35 2",
+                "0",
+                "18",
+                "28",
+                "4"
+            });
+
+            var inputs = new GraphInputs();
+            inputs.GenerateGraphInputs(standinput);
+
+            var skynet = new Graph();
+            skynet.BuildGraph(inputs.NoOfNodes, inputs.Links, inputs.GatewayIndexes);
+            skynet.Virus.CurrentPosition = skynet.Nodes[inputs.VirusPosition];
+            skynet.SeverLink(skynet.GetLink(0, 1));
+            skynet.SeverLink(skynet.GetLink(0, 2));
+            skynet.SeverLink(skynet.GetLink(0, 17));
+            skynet.SeverLink(skynet.GetLink(0, 16));
+            skynet.SeverLink(skynet.GetLink(0, 15));
+            skynet.SeverLink(skynet.GetLink(0, 14));
+            skynet.SeverLink(skynet.GetLink(0, 13));
+            skynet.SeverLink(skynet.GetLink(0, 12));
+            skynet.SeverLink(skynet.GetLink(0, 11));
+            skynet.SeverLink(skynet.GetLink(0, 10));
+            skynet.SeverLink(skynet.GetLink(0, 9));
+            skynet.SeverLink(skynet.GetLink(0, 8));
+            skynet.SeverLink(skynet.GetLink(0, 7));
+            skynet.SeverLink(skynet.GetLink(0, 6));
+            skynet.SeverLink(skynet.GetLink(0, 5));
+            skynet.SeverLink(skynet.GetLink(28, 35));
+
+            var game = new Game(skynet);
+
+            var result = game.FindTargetLink();
+
+            result.Should().BeOneOf("4 0");
+        }
+
+        [Fact]
+        public void TripleStar_38Nodes_Round4()
+        {
+            var standinput = new Queue<string>(new[]
+            {
+                "38 79 3", // no of nodes, no of links, no of gateways
+                "28 36",
+                "0 2",
+                "3 34",
+                "29 21",
+                "37 35",
+                "28 32",
+                "0 10",
+                "37 2",
+                "4 5",
+                "13 14",
+                "34 35",
+                "27 19",
+                "28 34",
+                "30 31",
+                "18 26",
+                "0 9",
+                "7 8",
+                "18 24",
+                "18 23",
+                "0 5",
+                "16 17",
+                "29 30",
+                "10 11",
+                "0 12",
+                "15 16",
+                "0 11",
+                "0 17",
+                "18 22",
+                "23 24",
+                "0 7",
+                "35 23",
+                "22 23",
+                "1 2",
+                "0 13",
+                "18 27",
+                "25 26",
+                "32 33",
+                "28 31",
+                "24 25",
+                "28 35",
+                "21 22",
+                "4 33",
+                "28 29",
+                "36 22",
+                "18 25",
+                "37 23",
+                "18 21",
+                "5 6",
+                "19 20",
+                "0 14",
+                "35 36",
+                "9 10",
+                "0 6",
+                "20 21",
+                "0 3",
+                "33 34",
+                "14 15",
+                "28 33",
+                "11 12",
+                "12 13",
+                "17 1",
+                "18 19",
+                "36 29",
+                "0 4",
+                "0 15",
+                "0 1",
+                "18 20",
+                "2 3",
+                "0 16",
+                "8 9",
+                "0 8",
+                "26 27",
+                "28 30",
+                "3 4",
+                "31 32",
+                "6 7",
+                "37 1",
+                "37 24",
+                "35 2",
+                "0",
+                "18",
+                "28",
+                "21"
+            });
+
+            var inputs = new GraphInputs();
+            inputs.GenerateGraphInputs(standinput);
+
+            var skynet = new Graph();
+            skynet.BuildGraph(inputs.NoOfNodes, inputs.Links, inputs.GatewayIndexes);
+            skynet.Virus.CurrentPosition = skynet.Nodes[inputs.VirusPosition];
+            skynet.SeverLink(skynet.GetLink(0, 1));
+            skynet.SeverLink(skynet.GetLink(0, 2));
+            skynet.SeverLink(skynet.GetLink(28, 34));
+            skynet.SeverLink(skynet.GetLink(28, 35));
+            skynet.SeverLink(skynet.GetLink(28, 36));
+            skynet.SeverLink(skynet.GetLink(28, 29));
+            skynet.SeverLink(skynet.GetLink(18, 21));
+            skynet.SeverLink(skynet.GetLink(18, 22));
+            skynet.SeverLink(skynet.GetLink(18, 23));
+            skynet.SeverLink(skynet.GetLink(18, 24));
+            skynet.SeverLink(skynet.GetLink(18, 25));
+            skynet.SeverLink(skynet.GetLink(18, 26));
+            skynet.SeverLink(skynet.GetLink(18, 27));
+            skynet.SeverLink(skynet.GetLink(18, 19));
+            skynet.SeverLink(skynet.GetLink(18, 20));
+
+            var game = new Game(skynet);
+
+            var result = game.FindTargetLink();
+
+            result.Should().BeOneOf("29 30");
+        }
     }
 }

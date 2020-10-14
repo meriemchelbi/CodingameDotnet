@@ -20,7 +20,11 @@ namespace Codingame
             foreach (var gateway in gateways)
             {
                 var path = GetPathToGateway(gateway);
-                paths[gateway] = path;
+                if (path is null)
+                    continue;
+
+                else
+                    paths[gateway] = path;
             }
 
             Node closestGateway = null;
@@ -31,11 +35,12 @@ namespace Codingame
                 var gatewayLink = _skynet.GetLink(path.Value[0].Id, path.Value[1].Id);
                 
                 // if agent is next to the gateway
-                if (path.Value[1] == _skynet.Virus.CurrentPosition)
+                if (path.Value[0] == _skynet.Virus.CurrentPosition
+                    || path.Value[1] == _skynet.Virus.CurrentPosition)
                     return ComputeResult(path.Value);
                 
                 var pathLength = path.Value.Count;
-                if (pathLength <= shortestPath)
+                if (pathLength < shortestPath)
                 {
                     shortestPath = pathLength;
                     closestGateway = path.Key;
@@ -89,6 +94,9 @@ namespace Codingame
 
             while (current != agentPosition)
             {
+                if (current.Neighbours.Count == 0)
+                    return null;
+
                 path.Add(current);
                 current = map[current].Origin == current
                     ? map[current].Destination
