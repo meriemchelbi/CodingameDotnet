@@ -32,13 +32,14 @@ namespace Codingame
                 
                 if (gatewayLink.IsSevered)
                     continue;
+
+                // if agent is next to the gateway
+                if (path.Value[1] == _skynet.Virus.CurrentPosition)
+                    return ComputeResult(path.Value);
                 
                 var pathLength = path.Value.Count;
                 if (pathLength <= shortestPath)
                 {
-                    if (AgentAdjacent(path))
-                        return ComputeResult(path.Value);
-                    
                     shortestPath = pathLength;
                     closestGateway = path.Key;
                 }
@@ -57,15 +58,6 @@ namespace Codingame
             _skynet.GetLink(resultOriginId, resultDestinationId).IsSevered = true;
 
             return $"{resultOriginId} {resultDestinationId}";
-        }
-
-        private bool AgentAdjacent(KeyValuePair<Node, List<Node>> path)
-        {
-            var agentPosition = _skynet.Virus.CurrentPosition;
-            var gatewayPosition = path.Key;
-
-            return path.Value[0] == agentPosition && path.Value[1] == gatewayPosition
-                || path.Value[0]== gatewayPosition && path.Value[1] == agentPosition;
         }
 
         private List<Node> GetPathToGateway(Node gateway)
