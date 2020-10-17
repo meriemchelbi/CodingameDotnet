@@ -1,12 +1,20 @@
 ﻿using System;
 
+/**
+ * Auto-generated code below aims at helping you parse
+ * the standard input according to the problem statement.
+ **/
 namespace Codingame
 {
-    class Program
+    public class Solution
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            string MESSAGE = Console.ReadLine();
+
+            var result = ChuckNorrisEncoder.Encode(MESSAGE);
+
+            Console.WriteLine(result);
         }
     }
 }
