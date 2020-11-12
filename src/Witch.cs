@@ -1,13 +1,15 @@
-﻿namespace Codingame
+﻿using System.Collections.Generic;
+
+namespace Codingame
 {
     public class Witch
     {
-        public int[] Inventory { get; set; }
+        public List<int> Inventory { get; set; }
         public int Score { get; set; }
 
-        public Witch(params int[] inventory)
+        public Witch()
         {
-            Inventory = inventory;
+            Inventory = new List<int>();
         }
 
         public bool CanCookRecipe(Recipe recipe)

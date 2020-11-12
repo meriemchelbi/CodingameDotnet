@@ -6,5 +6,6 @@
         public ActionType Type { get; set; }
         public int[] Ingredients { get; set; }
         public int Price { get; set; }
+        public bool IsCastable { get; set; }
     }
 }
