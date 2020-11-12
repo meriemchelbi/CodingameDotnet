@@ -13,26 +13,17 @@ namespace Codingame
             Witches = new Witch[] { new Witch(), new Witch()};
         }
 
-        public Recipe FindWinningRecipe()
+        public string DecideAction()
         {
-            return Recipes.FirstOrDefault(r => Witches[0].CanCookRecipe(r));
+            var winningRecipe = Recipes.Where(r => r.Type == ActionType.BREW)
+                          .FirstOrDefault(r => Witches[0].CanCookRecipe(r));
+
+            return $"{winningRecipe.Type} {winningRecipe.Id}";
         }
 
-        public ActionType DetermineActionType(string input)
+        private string PrintActionType(ActionType type)
         {
-            switch (input)
-            {
-                case "BREW":
-                    return ActionType.BREW;
-                case "CAST":
-                    return ActionType.CAST;
-                case "OPPONENT_CAST":
-                    return ActionType.OPPONENT_CAST;
-                case "LEARN":
-                    return ActionType.LEARN;
-                default:
-                    return ActionType.BREW;
-            }
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿namespace Codingame
 {
-    public enum ActionType
+    public class ActionType
     {
-        BREW,
-        CAST,
-        OPPONENT_CAST,
-        LEARN
+        public const string BREW = "BREW";
+        public const string CAST = "CAST";
+        public const string OPPONENT_CAST = "OPPONENT_CAST";
+        public const string LEARN = "LEARN";
     }
 }

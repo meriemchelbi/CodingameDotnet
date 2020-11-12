@@ -32,13 +32,14 @@ namespace Codingame
                     var recipe = new Recipe
                     {
                         Id = actionId,
-                        Type = game.DetermineActionType(actionType),
+                        Type = actionType,
                         Ingredients = new int[] { delta0, delta1, delta2, delta3 },
                         Price = price,
                         IsCastable = castable
                     };
-                    Console.Error.WriteLine($"Recipe {actionId} ingredients: {delta0}, {delta1}, {delta2}, {delta3}");
                     Console.Error.WriteLine($"Recipe {actionId} type: {actionType}");
+                    Console.Error.WriteLine($"Recipe {actionId} is castable? {castable}");
+                    Console.Error.WriteLine($"Recipe {actionId} ingredients: {delta0}, {delta1}, {delta2}, {delta3}");
                     Console.Error.WriteLine($"Recipe {actionId} price: {price}");
                     game.Recipes.Add(recipe);
 
@@ -65,10 +66,10 @@ namespace Codingame
                     Console.Error.WriteLine($"Witch {i}'s current score: {score}");
                 }
 
-                var winningRecipe = game.FindWinningRecipe();
+                var output = game.DecideAction();
 
                 // in the first league: BREW <id> | WAIT; later: BREW <id> | CAST <id> [<times>] | LEARN <id> | REST | WAIT
-                Console.WriteLine($"BREW {winningRecipe.Id}");
+                Console.WriteLine($"{output}");
             }
         }
     }
