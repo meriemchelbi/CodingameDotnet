@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Codingame
 {
@@ -8,11 +9,11 @@ namespace Codingame
         static void Main(string[] args)
         {
             string[] inputs;
-            var recipes = new List<Recipe>();
             var me = new Witch();
 
             while (true)
             {
+                var recipes = new List<Recipe>();
                 var actionCount = int.Parse(Console.ReadLine()); // the number of spells and recipes in play
                 Console.Error.WriteLine($"Number of recipes: {actionCount}");
                 for (int i = 0; i < actionCount; i++)
@@ -65,8 +66,9 @@ namespace Codingame
                     Console.Error.WriteLine($"My current score: {score}");
                 }
 
+                var winningRecipe = recipes.FirstOrDefault(r => me.CanCookRecipe(r));
                 // in the first league: BREW <id> | WAIT; later: BREW <id> | CAST <id> [<times>] | LEARN <id> | REST | WAIT
-                Console.WriteLine($"BREW {recipes[0].Id}");
+                Console.WriteLine($"BREW {winningRecipe.Id}");
             }
         }
     }
