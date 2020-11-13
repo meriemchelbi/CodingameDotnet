@@ -1,8 +1,8 @@
 {
-  "profiles": {
+  "profiles": {// Work setup- DO NOT COMMIT
     "SourceCombiner": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\merie\\Documents\\GitHub\\CodingameDotnet\\src\\ C:\\Users\\merie\\Documents\\GitHub\\CodingameDotnet\\CodinGameOutput\\SolutionOutput.cs"
+      "commandLineArgs": "C:\\Users\\meriemc\\source\\repos\\Codingame\\src C:\\Users\\meriemc\\source\\repos\\Codingame\\CondingameOutput\\SolutionOutput.cs"
     }
   }
 }

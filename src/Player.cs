@@ -26,10 +26,6 @@ namespace Codingame
                     var delta3 = int.Parse(inputs[5]); // tier-3 ingredient change
                     var price = int.Parse(inputs[6]); // the price in rupees if this is a potion
                     var castable = inputs[9] != "0"; // in the first league: always 0; later: 1 if this is a castable player spell
-                    if (castable && actionType == "BREW")
-                    {
-                        Console.Error.WriteLine($"CASTABLE BREW!");
-                    }
 
                     var recipe = new Recipe
                     {
