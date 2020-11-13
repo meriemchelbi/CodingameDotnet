@@ -26,7 +26,10 @@ namespace Codingame
                     var delta3 = int.Parse(inputs[5]); // tier-3 ingredient change
                     var price = int.Parse(inputs[6]); // the price in rupees if this is a potion
                     var castable = inputs[9] != "0"; // in the first league: always 0; later: 1 if this is a castable player spell
-                    Console.Error.WriteLine($"castable? original: {castable}");
+                    if (castable && actionType == "BREW")
+                    {
+                        Console.Error.WriteLine($"CASTABLE BREW!");
+                    }
 
                     var recipe = new Recipe
                     {
@@ -37,15 +40,12 @@ namespace Codingame
                         IsCastable = castable
                     };
 
-                    Console.Error.WriteLine(recipe.ToString());
                     game.Recipes.Add(recipe);
 
                     int tomeIndex = int.Parse(inputs[7]); // in the first two leagues: always 0; later: the index in the tome if this is a tome spell, equal to the read-ahead tax
                     int taxCount = int.Parse(inputs[8]); // in the first two leagues: always 0; later: the amount of taxed tier-0 ingredients you gain from learning this spell
                     bool repeatable = inputs[10] != "0"; // for the first two leagues: always 0; later: 1 if this is a repeatable player spell
                 }
-
-                Console.Error.WriteLine($"Number of recipes: {game.Recipes.Count}");
 
                 for (int i = 0; i < 2; i++)
                 {
@@ -64,11 +64,9 @@ namespace Codingame
 
                     var score = int.Parse(inputs[4]);
                     game.Witches[i].Score = score;
-
-                    Console.Error.WriteLine($"Witch {i}'s inventory: {inv0}, {inv1}, {inv2}, {inv3}");
-                    Console.Error.WriteLine($"Witch {i}'s current score: {score}");
                 }
 
+                game.PrintGameState();
                 var output = game.DecideAction();
 
                 // in the first league: BREW <id> | WAIT; later: BREW <id> | CAST <id> [<times>] | LEARN <id> | REST | WAIT

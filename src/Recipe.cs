@@ -8,7 +8,7 @@
         public int Price { get; set; }
         public bool IsCastable { get; set; }
 
-        public string ToString()
+        public override string ToString()
         {
             var ingredients = string.Empty;
             foreach (var ingredient in Ingredients)

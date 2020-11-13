@@ -8,18 +8,38 @@ namespace Codingame
     {
         public Witch[] Witches { get; set; }
         public List<Recipe> Recipes { get; set; }
-        public Witch Me { get; set; }
+        public Witch Me { get; }
+        public Witch Opponent { get; }
 
         public Game()
         {
-            Witches = new Witch[] { new Witch(), new Witch()};
-            Me = Witches[0];
+            Me = new Witch();
+            Opponent = new Witch();
+            Witches = new Witch[] { Me, Opponent};
+        }
+
+        public void PrintGameState()
+        {
+            Console.Error.WriteLine($"{Recipes.Count} recipes at start of round:");
+            foreach (var recipe in Recipes)
+            {
+                Console.Error.WriteLine(recipe.ToString());
+            }
+            Console.Error.WriteLine("Witches at start of round:");
+            Console.Error.WriteLine($"Me: {Me.ToString()}");
+            Console.Error.WriteLine($"Opponent: {Opponent.ToString()}");
         }
 
         public string DecideAction()
         {
-            var castableSpells = Recipes.Where(r => r.IsCastable 
-                                                    && r.Type != ActionType.OPPONENT_CAST);
+            var brewable = Recipes.FirstOrDefault(r => r.Type == ActionType.BREW && Me.CanCookRecipe(r));
+
+            if (brewable != null)
+            {
+                return $"BREW {brewable.Id}";
+            }
+
+            var castableSpells = Recipes.Where(r => r.IsCastable && r.Type == ActionType.CAST);
 
             // if there are no castable spells, REST
             if (!castableSpells.Any())
