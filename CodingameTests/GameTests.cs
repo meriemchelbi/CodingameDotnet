@@ -7,81 +7,140 @@ namespace CodingameTests
 {
     public class GameTests
     {
-        [Fact]
-        public void CastingMess()
+        private readonly Game _sut;
+        private readonly Recipe _brew47;
+        private readonly Recipe _brew49;
+        private readonly Recipe _brew50;
+        private readonly Recipe _brew54;
+        private readonly Recipe _brew65;
+        private readonly Recipe _cast78;
+        private readonly Recipe _cast79;
+        private readonly Recipe _cast80;
+        private readonly Recipe _cast82;
+
+        public GameTests()
         {
-            var game = new Game();
-            
-            var brew49 = new Recipe
-            {
-                Id = 49,
-                IsCastable = false,
-                Ingredients = new int[] { 0, 0, -5, 0 },
-                Type = ActionType.BREW
-            };
-            
-            var brew54 = new Recipe
-            {
-                Id = 54,
-                IsCastable = false,
-                Ingredients = new int[] { 0, 0, -2, -2 },
-                Type = ActionType.BREW
-            };
-            
-            var brew65 = new Recipe
-            {
-                Id = 65,
-                IsCastable = false,
-                Ingredients = new int[] { 0, 0, 0, -5 },
-                Type = ActionType.BREW
-            };
-            
-            var brew47 = new Recipe
-            {
-                Id = 47,
-                IsCastable = false,
-                Ingredients = new int[] { -3, -2, 0, 0 },
-                Type = ActionType.BREW
-            };
-            
-            var brew50 = new Recipe
-            {
-                Id = 50,
-                IsCastable = false,
-                Ingredients = new int[] { -2, 0, 0, -2 },
-                Type = ActionType.BREW
-            };
+            _sut = new Game();
+            _brew47 = MakeBrewRecipe(47, -3, -2, 0, 0);
+            _brew49 = MakeBrewRecipe(49, 0, 0, -5, 0);
+            _brew50 = MakeBrewRecipe(50, -2, 0, 0, -2);
+            _brew54 = MakeBrewRecipe(54, 0, 0, -2, -2);
+            _brew65 = MakeBrewRecipe(65, 0, 0, 0, -5);
+            _cast78 = MakeCastRecipe(78, 2, 0, 0, 0);
+            _cast79 = MakeCastRecipe(79, -1, 1, 0, 0);
+            _cast80 = MakeCastRecipe(80, 0, -1, 1, 0);
+            _cast82 = MakeCastRecipe(82, 2, 0, 0, 0);
+        }
 
-            var castable78 = new Recipe
+
+        [Fact]
+        public void DecideAction_BREW_Cookable_IssuesBrewInstruction()
+        {
+            _cast78.IsCastable = true;
+            _sut.Me.Inventory = new List<int> { 2, 0, 5, 0 };
+            _sut.Recipes = new List<Recipe> { _brew47, _brew49, _brew54, _cast78 };
+
+            var result = _sut.DecideAction();
+
+            result.Should().Be("BREW 49");
+        }
+        
+        [Fact]
+        public void DecideAction_BREW_NotCookable_DoesNotIssueBrewInstruction()
+        {
+            _cast78.IsCastable = true;
+            _sut.Me.Inventory = new List<int> { 2, 0, 5, 0 };
+            _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78 };
+
+            var result = _sut.DecideAction();
+
+            result.Should().NotContain("BREW");
+        }
+        
+        [Fact]
+        public void DecideAction_CAST_Cookable_Castable_IssuesCastInstruction()
+        {
+            _cast78.IsCastable = true;
+            _sut.Me.Inventory = new List<int> { 2, 0, 5, 0 };
+            _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78, _cast80 };
+
+            var result = _sut.DecideAction();
+
+            result.Should().Be("CAST 78");
+        }
+        
+        [Fact]
+        public void DecideAction_NoCookable_AllCastable_IssuesWaitInstruction()
+        {
+            _cast79.IsCastable = true;
+            _cast80.IsCastable = true;
+
+            _sut.Me.Inventory = new List<int> { 0, 0, 0, 0 };
+            _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast79, _cast80 };
+
+            var result = _sut.DecideAction();
+
+            result.Should().Be("WAIT");
+        }
+        
+        [Fact]
+        public void DecideAction_NoCastable_IssuesRestInstruction()
+        {
+            _sut.Me.Inventory = new List<int> { 0, 0, 0, 0 };
+            _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78, _cast79, _cast80 };
+
+            var result = _sut.DecideAction();
+
+            result.Should().Be("REST");
+        }
+        
+        [Fact]
+        public void DecideAction_SomeCastableButNotCookable_IssuesRestInstruction()
+        {
+            _cast79.IsCastable = true;
+
+            _sut.Me.Inventory = new List<int> { 0, 0, 0, 0 };
+            _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78, _cast79, _cast80 };
+
+            var result = _sut.DecideAction();
+
+            result.Should().Be("REST");
+        }
+        
+        [Fact]
+        public void DecideAction_Custom()
+        {
+            _cast82.IsCastable = true;
+
+            _sut.Me.Inventory = new List<int> { 0, 0, 0, 0 };
+            _sut.Recipes = new List<Recipe> { _cast82 };
+
+            var result = _sut.DecideAction();
+
+            result.Should().Be("REST");
+        }
+
+
+        private Recipe MakeBrewRecipe(int id, params int[] ingredients)
+        {
+            return new Recipe
             {
-                Id = 78,
-                IsCastable = true,
-                Ingredients = new int[] { 2, 0, 0, 0 },
+                Id = id,
+                IsCastable = false,
+                Ingredients = ingredients,
+                Type = ActionType.BREW
+            };
+        }
+        
+        private Recipe MakeCastRecipe(int id, params int[] ingredients)
+        {
+            return new Recipe
+            {
+                Id = id,
+                IsCastable = false,
+                Ingredients = ingredients,
                 Type = ActionType.CAST
             };
-            
-            var castable79 = new Recipe
-            {
-                Id = 79,
-                IsCastable = false,
-                Ingredients = new int[] { -1, 1, 0, 0 },
-                Type = ActionType.CAST
-            };
-            
-            var castable80 = new Recipe
-            {
-                Id = 80,
-                IsCastable = false,
-                Ingredients = new int[] { 0, -1, 1, 0 },
-                Type = ActionType.CAST
-            };
-
-            game.Witches[0].Inventory = new List<int> { 6, 0, 0, 3 };
-            game.Recipes = new List<Recipe> { castable78 };
-
-            var result = game.DecideAction();
-
-            result.Should().Be("CAST 8");
         }
     }
 }

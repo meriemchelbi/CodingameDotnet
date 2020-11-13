@@ -34,39 +34,26 @@ namespace Codingame
         {
             var brewable = Recipes.FirstOrDefault(r => r.Type == ActionType.BREW && Me.CanCookRecipe(r));
 
+            // if there are brewable spells, brew the first one you can
             if (brewable != null)
-            {
                 return $"BREW {brewable.Id}";
-            }
 
-            var castableSpells = Recipes.Where(r => r.IsCastable && r.Type == ActionType.CAST);
+            var casts = Recipes.Where(r => r.Type == ActionType.CAST);
 
-            // if there are no castable spells, REST
-            if (!castableSpells.Any())
-            {
+            // If all of the CAST are castable but none are cookable, WAIT
+            if (casts.All(c => c.IsCastable && !Me.CanCookRecipe(c)))
+                return "WAIT";
+
+            // If any of the CAST spells are castable, AND the castable ones are not cookable REST
+            if (casts.Any(c => !c.IsCastable) 
+                && casts.Where(c => c.IsCastable).All(c => !Me.CanCookRecipe(c)))
                 return "REST";
-            }
 
-            // if there are any brews, take the first cookable
-            if (Recipes.Any(r => r.Type == ActionType.BREW && Me.CanCookRecipe(r)))
+            else
             {
-
+                var castable = casts.FirstOrDefault(s => Me.CanCookRecipe(s) && s.IsCastable);
+                return $"CAST {castable.Id}";
             }
-            // if i can't cast a spell because I don't have enough resources or have too many to CAST, WAIT
-            var cookable = castableSpells.Where(s => Me.CanCookRecipe(s));
-            if (!cookable.Any())
-            {
-                return "REST";
-            }
-
-            // else see if I can brew, else cast
-            var winningRecipe = cookable.FirstOrDefault(r => r.Type == ActionType.BREW)
-                                ?? cookable.FirstOrDefault(r => r.Type == ActionType.CAST);
-            
-            foreach (var item in castableSpells)
-                Console.Error.WriteLine(item.ToString());
-            
-            return $"{winningRecipe.Type} {winningRecipe.Id}";
         }
 
 
