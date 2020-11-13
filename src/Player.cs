@@ -10,12 +10,10 @@ namespace Codingame
             string[] inputs;
             var game = new Game();
             
-
             while (true)
             {
                 game.Recipes = new List<Recipe>();
                 var actionCount = int.Parse(Console.ReadLine()); // the number of spells and recipes in play
-                Console.Error.WriteLine($"Number of recipes: {actionCount}");
 
                 for (int i = 0; i < actionCount; i++)
                 {
@@ -28,6 +26,7 @@ namespace Codingame
                     var delta3 = int.Parse(inputs[5]); // tier-3 ingredient change
                     var price = int.Parse(inputs[6]); // the price in rupees if this is a potion
                     var castable = inputs[9] != "0"; // in the first league: always 0; later: 1 if this is a castable player spell
+                    Console.Error.WriteLine($"castable? original: {castable}");
 
                     var recipe = new Recipe
                     {
@@ -37,10 +36,8 @@ namespace Codingame
                         Price = price,
                         IsCastable = castable
                     };
-                    Console.Error.WriteLine($"Recipe {actionId} type: {actionType}");
-                    Console.Error.WriteLine($"Recipe {actionId} is castable? {castable}");
-                    Console.Error.WriteLine($"Recipe {actionId} ingredients: {delta0}, {delta1}, {delta2}, {delta3}");
-                    Console.Error.WriteLine($"Recipe {actionId} price: {price}");
+
+                    Console.Error.WriteLine(recipe.ToString());
                     game.Recipes.Add(recipe);
 
                     int tomeIndex = int.Parse(inputs[7]); // in the first two leagues: always 0; later: the index in the tome if this is a tome spell, equal to the read-ahead tax
@@ -48,20 +45,26 @@ namespace Codingame
                     bool repeatable = inputs[10] != "0"; // for the first two leagues: always 0; later: 1 if this is a repeatable player spell
                 }
 
+                Console.Error.WriteLine($"Number of recipes: {game.Recipes.Count}");
 
                 for (int i = 0; i < 2; i++)
                 {
+                    var inventory = new List<int>();
                     inputs = Console.ReadLine().Split(' ');
                     var inv0 = int.Parse(inputs[0]);
-                    game.Witches[i].Inventory.Add(inv0);
+                    inventory.Add(inv0);
                     var inv1 = int.Parse(inputs[1]);
-                    game.Witches[i].Inventory.Add(inv1);
+                    inventory.Add(inv1);
                     var inv2 = int.Parse(inputs[2]);
-                    game.Witches[i].Inventory.Add(inv2);
+                    inventory.Add(inv2);
                     var inv3 = int.Parse(inputs[3]);
-                    game.Witches[i].Inventory.Add(inv3);
+                    inventory.Add(inv3);
+
+                    game.Witches[i].Inventory = inventory;
+
                     var score = int.Parse(inputs[4]);
                     game.Witches[i].Score = score;
+
                     Console.Error.WriteLine($"Witch {i}'s inventory: {inv0}, {inv1}, {inv2}, {inv3}");
                     Console.Error.WriteLine($"Witch {i}'s current score: {score}");
                 }

@@ -7,5 +7,15 @@
         public int[] Ingredients { get; set; }
         public int Price { get; set; }
         public bool IsCastable { get; set; }
+
+        public string ToString()
+        {
+            var ingredients = string.Empty;
+            foreach (var ingredient in Ingredients)
+            {
+                ingredients += ingredient + " ";
+            }
+            return $"Id: {Id}, Type : {Type}, ingredients: {ingredients}, isCastable: {IsCastable}";
+        }
     }
 }
