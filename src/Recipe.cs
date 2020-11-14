@@ -15,7 +15,7 @@
             {
                 ingredients += ingredient + " ";
             }
-            return $"Id: {Id}, Type : {Type}, ingredients: {ingredients}, isCastable: {IsCastable}";
+            return $"Id: {Id}, Type : {Type}, ingredients: {ingredients}, isCastable: {IsCastable}, price: {Price}";
         }
     }
 }
