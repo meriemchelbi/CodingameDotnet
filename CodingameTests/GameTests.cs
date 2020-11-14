@@ -31,7 +31,6 @@ namespace CodingameTests
             _cast79 = MakeCastRecipe(79, -1, 1, 0, 0);
             _cast80 = MakeCastRecipe(80, 0, -1, 1, 0);
             _cast81 = MakeCastRecipe(81, 0, 0, -1, 1);
-            _cast82 = MakeCastRecipe(82, 2, 0, 0, 0);
         }
 
 
@@ -123,17 +122,19 @@ namespace CodingameTests
         }        
         
         [Fact]
-        public void DecideAction_SelectsCAST_WithMostRequiredIngredient()
+        public void DecideAction_SelectsCAST_ChargeMostAbundantIngredient()
         {
-            _cast80.IsCastable = true; // needed
-            _cast79.IsCastable = true; // less needed
+            _cast78.IsCastable = true;
+            _cast79.IsCastable = true;
+            _cast80.IsCastable = true;
+            _cast81.IsCastable = true;
 
-            _sut.Me.Inventory = new List<int> { 1, 1, 0, 0 };
-            _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78, _cast79, _cast80 };
+            _sut.Me.Inventory = new List<int> { 2, 1, 1, 0 };
+            _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78, _cast79, _cast80, _cast81 };
 
             var result = _sut.DecideAction();
 
-            result.Should().Be("CAST 80");
+            result.Should().Be("CAST 79");
         }
         
         private Recipe MakeBrewRecipe(int id, params int[] ingredients)

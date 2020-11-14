@@ -51,12 +51,12 @@ namespace Codingame
 
             else
             {
-                var castable = SelectMostNeededCast(casts);
+                var castable = SpendMostAbundantIngredient(casts);
                 return $"CAST {castable.Id}";
             }
         }
 
-        private Recipe SelectMostNeededCast(IEnumerable<Recipe> casts)
+        private Recipe SpendMostAbundantIngredient(IEnumerable<Recipe> casts)
         {
             var canCast = casts.Where(s => Me.CanCookRecipe(s) && s.IsCastable).ToList();
 
@@ -64,15 +64,15 @@ namespace Codingame
 
             while (inventoryClone.Count > 0)
             {
-                var lowest = inventoryClone.Min();
-                var lowestIndex = Me.Inventory.IndexOf(lowest);
-                var candidate = canCast.FirstOrDefault(s => s.Ingredients[lowestIndex] > 0);
+                var highest = inventoryClone.Max();
+                var highestIndex = Me.Inventory.IndexOf(highest);
+                var candidate = canCast.FirstOrDefault(s => s.Ingredients[highestIndex] < 0);
                 if (candidate != null)
                     return candidate;
 
                 else
                 {
-                    inventoryClone.Remove(lowest);
+                    inventoryClone.Remove(highest);
                     continue;
                 }
             }
