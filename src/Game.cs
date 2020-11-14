@@ -8,11 +8,15 @@ namespace Codingame
     {
         public Witch[] Witches { get; set; }
         public List<Recipe> Recipes { get; set; }
+
+        private readonly CastSelector _castSelector;
+
         public Witch Me { get; }
         public Witch Opponent { get; }
 
         public Game()
         {
+            _castSelector = new CastSelector();
             Me = new Witch();
             Opponent = new Witch();
             Witches = new Witch[] { Me, Opponent};
@@ -51,8 +55,9 @@ namespace Codingame
 
             else
             {
-                var castable = casts.FirstOrDefault(s => Me.CanCookRecipe(s) && s.IsCastable);
-                return $"CAST {castable.Id}";
+                var castable = casts.Where(s => Me.CanCookRecipe(s) && s.IsCastable);
+                var selectedCast = _castSelector.SelectCast(castable, Me.Inventory);
+                return $"CAST {selectedCast.Id}";
             }
         }
 
