@@ -131,16 +131,5 @@ namespace CodingameTests
 
             result.Should().BeEquivalentTo(_cast3);
         }
-        
-        [Fact]
-        public void SelectCast_Cast0Available_LastItemEqual7_FirstItemEqual0_SelectsCast0()
-        {
-            var casts = new List<Recipe> { _cast0, _cast1, _cast2, _cast3 };
-            var inventory = new List<int> { 0, 1, 0, 7 };
-
-            var result = _sut.SelectCast(casts, inventory);
-
-            result.Should().BeEquivalentTo(_cast0);
-        }
     }
 }

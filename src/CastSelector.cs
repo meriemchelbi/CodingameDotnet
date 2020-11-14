@@ -21,11 +21,6 @@ namespace Codingame
                     indexCastsDictionary.Add(3, cast);
             }
 
-            var cast0Available = indexCastsDictionary.TryGetValue(0, out var castZero);
-
-            if (inventory[3] >= 4 && inventory[0] == 0 && cast0Available)
-                return castZero;
-
             var lowestItem = inventory.Min();
             if (inventory.Count(i => i == lowestItem) == 1)
             {
