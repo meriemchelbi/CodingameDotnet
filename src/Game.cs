@@ -49,21 +49,18 @@ namespace Codingame
 
             var casts = Recipes.Where(r => r.Type == ActionType.CAST);
 
-            // If all of the CAST are castable but none are cookable, WAIT
-            if (casts.All(c => c.IsCastable && !Me.CanCookRecipe(c)))
-                return "WAIT";
-
-            // If any of the CAST spells are castable, AND the castable ones are not cookable REST
-            if (casts.Any(c => !c.IsCastable) 
-                && casts.Where(c => c.IsCastable).All(c => !Me.CanCookRecipe(c)))
+            // If any of the CAST spells are castable, AND the castable ones are not cookable REST 
+            // OR if my last item is greater or equal to 4 and not all spells are castable
+            if ((casts.Any(c => !c.IsCastable) && casts.Where(c => c.IsCastable).All(c => !Me.CanCookRecipe(c)))
+                || Me.Inventory[3] >= 4 & !casts.All(c => c.IsCastable))
                 return "REST";
 
-            else
-            {
-                var castable = casts.Where(s => Me.CanCookRecipe(s) && s.IsCastable);
-                var selectedCast = _castSelector.SelectCast(castable, Me.Inventory);
-                return $"CAST {selectedCast.Id}";
-            }
+            var castable = casts.Where(s => Me.CanCookRecipe(s) && s.IsCastable);
+            var selectedCast = _castSelector.SelectCast(castable, Me.Inventory);
+
+            return selectedCast is null
+                ? "WAIT"
+                : $"CAST {selectedCast.Id}";
         }
 
 
