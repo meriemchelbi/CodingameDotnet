@@ -7,6 +7,9 @@ namespace Codingame
     public class Game
     {
         public Witch[] Witches { get; set; }
+
+        private CastSelector _castSelector;
+
         public List<Recipe> Recipes { get; set; }
         public Witch Me { get; }
         public Witch Opponent { get; }
@@ -16,6 +19,7 @@ namespace Codingame
             Me = new Witch();
             Opponent = new Witch();
             Witches = new Witch[] { Me, Opponent};
+            _castSelector = new CastSelector();
         }
 
         public void PrintGameState()
@@ -32,11 +36,11 @@ namespace Codingame
 
         public string DecideAction()
         {
-            var brewable = Recipes.FirstOrDefault(r => r.Type == ActionType.BREW && Me.CanCookRecipe(r));
+            var toBrew = Recipes.FirstOrDefault(r => r.Type == ActionType.BREW && Me.CanCookRecipe(r));
 
             // if there are brewable spells, brew the first one you can
-            if (brewable != null)
-                return $"BREW {brewable.Id}";
+            if (toBrew != null)
+                return $"BREW {toBrew.Id}";
 
             var casts = Recipes.Where(r => r.Type == ActionType.CAST);
 
@@ -51,11 +55,22 @@ namespace Codingame
 
             else
             {
-                var castable = casts.FirstOrDefault(s => Me.CanCookRecipe(s) && s.IsCastable);
-                return $"CAST {castable.Id}";
+                var toCast = SelectBestCastSpell(Recipes);
+                return $"CAST {toCast.Id}";
             }
         }
 
+        private Recipe SelectBestCastSpell(IEnumerable<Recipe> Recipes)
+        {
+            var brews = Recipes.Where(r => r.Type == ActionType.BREW).ToList();
+            var targetBrew = _castSelector.ComputeTargetBrew(brews, Me.Inventory);
+
+            var cookableCasts = Recipes.Where(r => r.IsCastable && r.Type == ActionType.CAST)
+                                  .Where(r => Me.CanCookRecipe(r)).ToList();
+
+            return _castSelector.ComputeBestCastForBrew(cookableCasts, Me.Inventory, targetBrew) 
+                ?? cookableCasts.FirstOrDefault();
+        }
 
     }
 }
