@@ -32,11 +32,16 @@ namespace Codingame
 
         public string DecideAction()
         {
-            var brewable = Recipes.FirstOrDefault(r => r.Type == ActionType.BREW && Me.CanCookRecipe(r));
+            var brewable = Recipes.Where(r => r.Type == ActionType.BREW && Me.CanCookRecipe(r)).ToList();
+            if (brewable.Count > 0)
+            {
+                var maxPrice = brewable.Max(b => b.Price);
+                var selectedBrew = brewable?.FirstOrDefault(b => b.Price == maxPrice);
 
-            // if there are brewable spells, brew the first one you can
-            if (brewable != null)
-                return $"BREW {brewable.Id}";
+                // if there are brewable spells, brew the first one you can
+                if (selectedBrew != null)
+                    return $"BREW {selectedBrew.Id}";
+            }
 
             var casts = Recipes.Where(r => r.Type == ActionType.CAST);
 

@@ -21,11 +21,11 @@ namespace CodingameTests
         public GameTests()
         {
             _sut = new Game();
-            _brew47 = RecipeHelpers.MakeBrewRecipe(47, -3, -2, 0, 0);
-            _brew49 = RecipeHelpers.MakeBrewRecipe(49, 0, 0, -5, 0);
-            _brew50 = RecipeHelpers.MakeBrewRecipe(50, -2, 0, 0, -2);
-            _brew54 = RecipeHelpers.MakeBrewRecipe(54, 0, 0, -2, -2);
-            _brew65 = RecipeHelpers.MakeBrewRecipe(65, 0, 0, 0, -5);
+            _brew47 = RecipeHelpers.MakeBrewRecipe(47, 0, -3, -2, 0, 0);
+            _brew49 = RecipeHelpers.MakeBrewRecipe(49, 0, 0, 0, -5, 0);
+            _brew50 = RecipeHelpers.MakeBrewRecipe(50, 0, -2, 0, 0, -2);
+            _brew54 = RecipeHelpers.MakeBrewRecipe(54, 0, 0, 0, -2, -2);
+            _brew65 = RecipeHelpers.MakeBrewRecipe(65, 0, 0, 0, 0, -5);
             _cast78 = RecipeHelpers.MakeCastRecipe(78, 2, 0, 0, 0);
             _cast79 = RecipeHelpers.MakeCastRecipe(79, -1, 1, 0, 0);
             _cast80 = RecipeHelpers.MakeCastRecipe(80, 0, -1, 1, 0);
