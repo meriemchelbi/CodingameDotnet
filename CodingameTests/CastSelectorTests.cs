@@ -59,7 +59,7 @@ namespace CodingameTests
 
             var result = _sut.ComputeTargetBrew(brews, inventory);
 
-            result.Should().BeEquivalentTo(_brew64);
+            result.Should().BeEquivalentTo(_brew58);
         }
 
         [Fact]

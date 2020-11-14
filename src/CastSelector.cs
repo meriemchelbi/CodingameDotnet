@@ -8,7 +8,7 @@ namespace Codingame
         public Recipe ComputeTargetBrew(IEnumerable<Recipe> brews,
                                         List<int> inventory)
         {
-            var deltaMappings = new Dictionary<Recipe, int>();
+            var deltaMappings = new Dictionary<Recipe, (int, int)>();
 
             // calculate delta between brews and inventory
             foreach (var brew in brews)
@@ -20,26 +20,38 @@ namespace Codingame
                     delta[i] = inventory[i] + brew.Ingredients[i];
                 }
 
-                var noOfPositives = delta.Count(value => value >= 0); 
-                // work out sum of all negative ingredients (deficit) and filter on the ones with lowest deficit
+                var noOfPositives = delta.Count(value => value >= 0);
+                var totalDeficit = delta.Where(value => value < 0).Sum();
+                            
                 // potential extensions: 
                 // or work out sum of all positive ingredients (remainder) and filter on the ones with highest remainder
 
-                deltaMappings.Add(brew, noOfPositives);
+                deltaMappings.Add(brew, (noOfPositives, totalDeficit));
             }
 
-            // select brews with the most positive values (and the smallest negative values?)
-            var highestPositives = 0;
+            // select brews with the most positive values or the smallest deficit
+            var highestPositives = int.MinValue;
+            var smallestDeficit = int.MinValue;
 
             foreach (var mapping in deltaMappings)
             {
-                highestPositives = mapping.Value > highestPositives
-                                    ? mapping.Value
+                var noOfPositives = mapping.Value.Item1;
+                highestPositives = noOfPositives > highestPositives
+                                    ? noOfPositives
                                     : highestPositives;
+
+                var totalDeficit = mapping.Value.Item2;
+                smallestDeficit = totalDeficit > smallestDeficit
+                                   ? totalDeficit
+                                   : smallestDeficit;
             }
 
-            var brewShortlist = deltaMappings.Where(m => m.Value == highestPositives)
+            //var brewShortlist = deltaMappings.Where(m => m.Value.Item1 == highestPositives)
+            //                                .Select(m => m.Key).ToList();
+
+            var brewShortlist = deltaMappings.Where(m => m.Value.Item2 == smallestDeficit)
                                             .Select(m => m.Key).ToList();
+
             var highestPrice = brewShortlist.Max(b => b.Price);
 
             return brewShortlist.FirstOrDefault(b => b.Price == highestPrice)
@@ -56,8 +68,6 @@ namespace Codingame
             {
                 var roundEndState = new int[4];
                 var brewSimulation = new int[4];
-                var numberOfZeros = 0;
-                var deficit = 0;
 
                 for (int i = 0; i < 4; i++)
                 {
@@ -66,15 +76,15 @@ namespace Codingame
 
                     // calculate delta between each end state and targetbrew - brewSimulation
                     brewSimulation[i] = roundEndState[i] + targetBrew.Ingredients[i];
-                    numberOfZeros = brewSimulation.Count(item => item == 0);
-                    deficit = brewSimulation.Where(s => s < 0).Sum();
                 }
 
+                var numberOfZeros = brewSimulation.Count(item => item == 0);
+                var deficit = brewSimulation.Where(s => s < 0).Sum();
                 castMappings.Add(cast, (deficit, numberOfZeros));
             }
 
-            int leastZeros = 0;
-            int smallestDeficit = 0;
+            int leastZeros = int.MaxValue;
+            int smallestDeficit = int.MinValue;
 
             // return the cast associated with the simulation with lowest deficit
             // select cast associated with the brew simulation with the lowest number of zeros
@@ -90,8 +100,8 @@ namespace Codingame
             var deficitWinner = castMappings.FirstOrDefault(m => m.Value.Item1 == smallestDeficit).Key;
             var zerosWinner = castMappings.FirstOrDefault(m => m.Value.Item2 == leastZeros).Key;
 
-            return deficitWinner
-                ?? zerosWinner;
+            return zerosWinner
+                ?? deficitWinner;
         }
     }
 }
