@@ -38,7 +38,7 @@ namespace Codingame
             if (brewable != null)
                 return $"BREW {brewable.Id}";
 
-            var casts = Recipes.Where(r => r.Type == ActionType.CAST);
+            var casts = Recipes.Where(r => r.Type == ActionType.CAST).ToList();
 
             // If all of the CAST are castable but none are cookable, WAIT
             if (casts.All(c => c.IsCastable && !Me.CanCookRecipe(c)))
@@ -51,11 +51,34 @@ namespace Codingame
 
             else
             {
-                var castable = casts.FirstOrDefault(s => Me.CanCookRecipe(s) && s.IsCastable);
+                var castable = SelectMostNeededCast(casts);
                 return $"CAST {castable.Id}";
             }
         }
 
+        private Recipe SelectMostNeededCast(IEnumerable<Recipe> casts)
+        {
+            var canCast = casts.Where(s => Me.CanCookRecipe(s) && s.IsCastable).ToList();
+
+            var inventoryClone = new List<int>(Me.Inventory);
+
+            while (inventoryClone.Count > 0)
+            {
+                var lowest = inventoryClone.Min();
+                var lowestIndex = Me.Inventory.IndexOf(lowest);
+                var candidate = canCast.FirstOrDefault(s => s.Ingredients[lowestIndex] > 0);
+                if (candidate != null)
+                    return candidate;
+
+                else
+                {
+                    inventoryClone.Remove(lowest);
+                    continue;
+                }
+            }
+
+            return canCast.FirstOrDefault();
+        }
 
     }
 }

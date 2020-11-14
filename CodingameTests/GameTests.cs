@@ -16,6 +16,7 @@ namespace CodingameTests
         private readonly Recipe _cast78;
         private readonly Recipe _cast79;
         private readonly Recipe _cast80;
+        private readonly Recipe _cast81;
         private readonly Recipe _cast82;
 
         public GameTests()
@@ -29,6 +30,7 @@ namespace CodingameTests
             _cast78 = MakeCastRecipe(78, 2, 0, 0, 0);
             _cast79 = MakeCastRecipe(79, -1, 1, 0, 0);
             _cast80 = MakeCastRecipe(80, 0, -1, 1, 0);
+            _cast81 = MakeCastRecipe(81, 0, 0, -1, 1);
             _cast82 = MakeCastRecipe(82, 2, 0, 0, 0);
         }
 
@@ -108,19 +110,32 @@ namespace CodingameTests
         }
         
         [Fact]
-        public void DecideAction_Custom()
+        public void DecideAction_CAST_SelectsCastableCookable()
         {
-            _cast82.IsCastable = true;
+            _cast78.IsCastable = true;
 
             _sut.Me.Inventory = new List<int> { 0, 0, 0, 0 };
-            _sut.Recipes = new List<Recipe> { _cast82 };
+            _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78, _cast79 };
 
             var result = _sut.DecideAction();
 
-            result.Should().Be("REST");
+            result.Should().Be("CAST 78");
+        }        
+        
+        [Fact]
+        public void DecideAction_SelectsCAST_WithMostRequiredIngredient()
+        {
+            _cast80.IsCastable = true; // needed
+            _cast79.IsCastable = true; // less needed
+
+            _sut.Me.Inventory = new List<int> { 1, 1, 0, 0 };
+            _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78, _cast79, _cast80 };
+
+            var result = _sut.DecideAction();
+
+            result.Should().Be("CAST 80");
         }
-
-
+        
         private Recipe MakeBrewRecipe(int id, params int[] ingredients)
         {
             return new Recipe
