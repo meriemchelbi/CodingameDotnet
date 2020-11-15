@@ -12,9 +12,7 @@ namespace Codingame
             if (selected != null)
                 return selected;
 
-            var tierZero = learnables.Where(l => l.Ingredients[3] < 0);
-
-            return tierZero.FirstOrDefault(); ;
+            return learnables.FirstOrDefault(l => l.Cost >= -2 ) ;
         }
     }
 }

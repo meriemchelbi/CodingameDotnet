@@ -8,19 +8,29 @@ namespace Codingame
         public Recipe FindCast(Recipe targetInventoryDelta, IEnumerable<Recipe> availableCasts)
         {
             var smallestCost = int.MinValue;
-            Recipe selected = availableCasts.FirstOrDefault();
+            var highestYield = int.MinValue;
+            Recipe cheapestCast = null;
+            Recipe mostLucrativeCast = null;
 
             foreach (var cast in availableCasts)
             {
                 var delta = cast.GetDelta(targetInventoryDelta);
+
                 if (delta.Cost > smallestCost)
                 {
                     smallestCost = delta.Cost;
-                    selected = cast;
+                    cheapestCast = cast;
+                }
+
+                var yield = delta.Ingredients.Sum();
+                if (yield > highestYield)
+                {
+                    highestYield = yield;
+                    mostLucrativeCast = cast;
                 }
             }
-
-            return selected;
+            
+            return cheapestCast ?? mostLucrativeCast?? availableCasts.FirstOrDefault();
         }
     }
 }
