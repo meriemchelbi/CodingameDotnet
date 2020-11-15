@@ -32,7 +32,7 @@ namespace Codingame
                         Id = actionId,
                         Type = actionType,
                         Ingredients = new int[] { delta0, delta1, delta2, delta3 },
-                        Price = price,
+                        Income = price,
                         IsCastable = castable
                     };
 
@@ -45,16 +45,16 @@ namespace Codingame
 
                 for (int i = 0; i < 2; i++)
                 {
-                    var inventory = new List<int>();
+                    var inventory = new int[4];
                     inputs = Console.ReadLine().Split(' ');
                     var inv0 = int.Parse(inputs[0]);
-                    inventory.Add(inv0);
+                    inventory[0] = inv0;
                     var inv1 = int.Parse(inputs[1]);
-                    inventory.Add(inv1);
+                    inventory[1] = inv1;
                     var inv2 = int.Parse(inputs[2]);
-                    inventory.Add(inv2);
+                    inventory[2] = inv2;
                     var inv3 = int.Parse(inputs[3]);
-                    inventory.Add(inv3);
+                    inventory[3] = inv3;
 
                     game.Witches[i].Inventory = inventory;
 

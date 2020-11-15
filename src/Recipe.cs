@@ -1,12 +1,20 @@
-﻿namespace Codingame
+﻿using System.Linq;
+
+namespace Codingame
 {
     public class Recipe
     {
         public int Id { get; set; }
         public string Type { get; set; }
         public int[] Ingredients { get; set; }
-        public int Price { get; set; }
+        public int Income { get; set; }
         public bool IsCastable { get; set; }
+        public int Cost
+        {
+            get { return this.GetCost(); }
+        }
+        
+        private readonly int _cost;
 
         public override string ToString()
         {
@@ -15,7 +23,7 @@
             {
                 ingredients += ingredient + " ";
             }
-            return $"Id: {Id}, Type : {Type}, ingredients: {ingredients}, isCastable: {IsCastable}, price: {Price}";
+            return $"Id: {Id}, Type : {Type}, ingredients: {ingredients}, isCastable: {IsCastable}, price: {Income}";
         }
     }
 }

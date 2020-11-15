@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Codingame
+﻿namespace Codingame
 {
     public class Witch
     {
-        public List<int> Inventory { get; set; }
+        public int[] Inventory { get; set; }
         public int Score { get; set; }
 
         public Witch()
         {
-            Inventory = new List<int>();
+            Inventory = new int[4];
         }
 
-        public bool CanCookRecipe(Recipe recipe)
+        public bool CanCook(Recipe recipe)
         {
             var ingredients = recipe.Ingredients;
 
@@ -26,6 +23,11 @@ namespace Codingame
 
             return sum0 >= 0 && sum1 >= 0 && sum2 >= 0 && sum3 >= 0
                 && sumOfSums <= 10;
+        }
+
+        public bool CanLearn(int spellIndex)
+        {
+            return spellIndex <= Inventory[0];
         }
 
         public override string ToString()

@@ -9,7 +9,7 @@ namespace CodingameTests
             return new Recipe
             {
                 Id = id,
-                Price = price,
+                Income = price,
                 IsCastable = false,
                 Ingredients = ingredients,
                 Type = ActionType.BREW
@@ -24,6 +24,17 @@ namespace CodingameTests
                 IsCastable = false,
                 Ingredients = ingredients,
                 Type = ActionType.CAST
+            };
+        }
+
+        public static Recipe MakeLearnRecipe(int id, params int[] ingredients)
+        {
+            return new Recipe
+            {
+                Id = id,
+                IsCastable = false,
+                Ingredients = ingredients,
+                Type = ActionType.LEARN
             };
         }
     }

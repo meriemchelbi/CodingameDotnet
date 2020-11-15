@@ -37,7 +37,7 @@ namespace CodingameTests
         public void DecideAction_BREW_Cookable_IssuesBrewInstruction()
         {
             _cast78.IsCastable = true;
-            _sut.Me.Inventory = new List<int> { 2, 0, 5, 0 };
+            _sut.Me.Inventory = new int[] { 2, 0, 5, 0 };
             _sut.Recipes = new List<Recipe> { _brew47, _brew49, _brew54, _cast78 };
 
             var result = _sut.DecideAction();
@@ -49,7 +49,7 @@ namespace CodingameTests
         public void DecideAction_BREW_NotCookable_DoesNotIssueBrewInstruction()
         {
             _cast78.IsCastable = true;
-            _sut.Me.Inventory = new List<int> { 2, 0, 5, 0 };
+            _sut.Me.Inventory = new int[] { 2, 0, 5, 0 };
             _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78 };
 
             var result = _sut.DecideAction();
@@ -61,7 +61,7 @@ namespace CodingameTests
         public void DecideAction_CAST_Cookable_Castable_IssuesCastInstruction()
         {
             _cast78.IsCastable = true;
-            _sut.Me.Inventory = new List<int> { 2, 0, 5, 0 };
+            _sut.Me.Inventory = new int[] { 2, 0, 5, 0 };
             _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78, _cast80 };
 
             var result = _sut.DecideAction();
@@ -75,7 +75,7 @@ namespace CodingameTests
             _cast79.IsCastable = true;
             _cast80.IsCastable = true;
 
-            _sut.Me.Inventory = new List<int> { 0, 0, 0, 0 };
+            _sut.Me.Inventory = new int[] { 0, 0, 0, 0 };
             _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast79, _cast80 };
 
             var result = _sut.DecideAction();
@@ -86,7 +86,7 @@ namespace CodingameTests
         [Fact]
         public void DecideAction_NoCastable_IssuesRestInstruction()
         {
-            _sut.Me.Inventory = new List<int> { 0, 0, 0, 0 };
+            _sut.Me.Inventory = new int[] { 0, 0, 0, 0 };
             _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78, _cast79, _cast80 };
 
             var result = _sut.DecideAction();
@@ -99,7 +99,7 @@ namespace CodingameTests
         {
             _cast79.IsCastable = true;
 
-            _sut.Me.Inventory = new List<int> { 0, 0, 0, 0 };
+            _sut.Me.Inventory = new int[] { 0, 0, 0, 0 };
             _sut.Recipes = new List<Recipe> { _brew47, _brew54, _cast78, _cast79, _cast80 };
 
             var result = _sut.DecideAction();

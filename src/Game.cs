@@ -32,11 +32,11 @@ namespace Codingame
 
         public string DecideAction()
         {
-            var brewable = Recipes.Where(r => r.Type == ActionType.BREW && Me.CanCookRecipe(r)).ToList();
+            var brewable = Recipes.Where(r => r.Type == ActionType.BREW && Me.CanCook(r)).ToList();
             if (brewable.Count > 0)
             {
-                var maxPrice = brewable.Max(b => b.Price);
-                var selectedBrew = brewable?.FirstOrDefault(b => b.Price == maxPrice);
+                var maxPrice = brewable.Max(b => b.Income);
+                var selectedBrew = brewable?.FirstOrDefault(b => b.Income == maxPrice);
 
                 // if there are brewable spells, brew the first one you can
                 if (selectedBrew != null)
@@ -48,11 +48,11 @@ namespace Codingame
 
             // If any of the CAST spells are castable, AND the castable ones are not cookable REST 
             // OR if my last item is greater or equal to 4 and not all spells are castable
-            if ((casts.Any(c => !c.IsCastable) && casts.Where(c => c.IsCastable).All(c => !Me.CanCookRecipe(c)))
+            if ((casts.Any(c => !c.IsCastable) && casts.Where(c => c.IsCastable).All(c => !Me.CanCook(c)))
                 || Me.Inventory[3] >= 4 & !casts.All(c => c.IsCastable))
                 return "REST";
 
-            var castable = casts.FirstOrDefault(s => Me.CanCookRecipe(s) && s.IsCastable);
+            var castable = casts.FirstOrDefault(s => Me.CanCook(s) && s.IsCastable);
             return castable != null
                 ? $"CAST {castable.Id}"
                 : "WAIT";
