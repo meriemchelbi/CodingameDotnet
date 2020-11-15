@@ -10,6 +10,7 @@ namespace Codingame
         public List<Recipe> Recipes { get; set; }
 
         private readonly CastSelector _castSelector;
+        private readonly LearnSelector _learnSelector;
 
         public Witch Me { get; }
         public Witch Opponent { get; }
@@ -17,6 +18,7 @@ namespace Codingame
         public Game()
         {
             _castSelector = new CastSelector();
+            _learnSelector = new LearnSelector();
             Me = new Witch();
             Opponent = new Witch();
             Witches = new Witch[] { Me, Opponent};
@@ -30,8 +32,8 @@ namespace Codingame
                 Console.Error.WriteLine(recipe.ToString());
             }
             Console.Error.WriteLine("Witches at start of round:");
-            Console.Error.WriteLine($"Me: {Me.ToString()}");
-            Console.Error.WriteLine($"Opponent: {Opponent.ToString()}");
+            Console.Error.WriteLine($"Me: {Me}");
+            Console.Error.WriteLine($"Opponent: {Opponent}");
         }
 
         public string DecideAction()
@@ -54,14 +56,23 @@ namespace Codingame
                 || Me.Inventory[3] >= 4 & cookableCasts.Any(c => !c.IsCastable))
                 return "REST";
 
-            var castable = cookableCasts.Where(s => Me.CanCookRecipe(s) && s.IsCastable);
+            var availableCastSpells = Recipes.Where(r => r.Type == ActionType.CAST);
+            if (availableCastSpells.Count() == 4)
+            {
+                var learnables = Recipes.Where(r => r.Type == ActionType.LEARN).ToList();
+                var cookableLearns = learnables.Where(l => Me.CanLearnRecipe(learnables.IndexOf(l)));
+                var selectedLearn = _learnSelector.SelectLearnSpell(cookableLearns);
+                if (selectedLearn != null)
+                    return $"LEARN { selectedLearn.Id}";
+            }
+
+            var castable = cookableCasts.Where(s => s.IsCastable);
+
             var selectedCast = _castSelector.SelectCast(castable, Me.Inventory);
 
             return selectedCast is null
                 ? "WAIT"
                 : $"CAST {selectedCast.Id}";
         }
-
-
     }
 }

@@ -27,6 +27,10 @@ namespace Codingame
             return sum0 >= 0 && sum1 >= 0 && sum2 >= 0 && sum3 >= 0
                 && sumOfSums <= 10;
         }
+        public bool CanLearnRecipe(int spellIndex)
+        {
+            return spellIndex <= Inventory[0];
+        }
 
         public override string ToString()
         {

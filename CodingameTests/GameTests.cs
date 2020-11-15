@@ -16,7 +16,7 @@ namespace CodingameTests
         private readonly Recipe _cast78;
         private readonly Recipe _cast79;
         private readonly Recipe _cast80;
-        private readonly Recipe _cast82;
+        private readonly Recipe _cast81;
 
         public GameTests()
         {
@@ -29,9 +29,8 @@ namespace CodingameTests
             _cast78 = RecipeHelpers.MakeCastRecipe(78, 2, 0, 0, 0);
             _cast79 = RecipeHelpers.MakeCastRecipe(79, -1, 1, 0, 0);
             _cast80 = RecipeHelpers.MakeCastRecipe(80, 0, -1, 1, 0);
-            _cast82 = RecipeHelpers.MakeCastRecipe(82, 2, 0, 0, 0);
+            _cast81 = RecipeHelpers.MakeCastRecipe(81, 0, 0, -1, 1);
         }
-
 
         [Fact]
         public void DecideAction_BREW_Cookable_IssuesBrewInstruction()
@@ -105,6 +104,36 @@ namespace CodingameTests
             var result = _sut.DecideAction();
 
             result.Should().Be("REST");
+        }
+
+        [Fact]
+        public void DecideAction_FourCastsAvailable_CookableLearns_IssuesLearnInstruction()
+        {
+            _cast78.IsCastable = true;
+            _cast80.IsCastable = true;
+            var learn1 = RecipeHelpers.MakeLearnRecipe(1, 0, 2, 3, -1);
+            var learn2 = RecipeHelpers.MakeLearnRecipe(1, 0, 2, -1, 5);
+            _sut.Me.Inventory = new List<int> { 2, 2, 2, 2 };
+            _sut.Recipes = new List<Recipe> { _cast78, _cast79, _cast80, _cast81, learn1, learn2 };
+
+            var result = _sut.DecideAction();
+
+            result.Should().Contain("LEARN");
+        }
+        
+        [Fact]
+        public void DecideAction_FourCastsAvailable_NoTierZeroInInventory_IssuesLearn1Instruction()
+        {
+            _cast78.IsCastable = true;
+            _cast80.IsCastable = true;
+            var learn1 = RecipeHelpers.MakeLearnRecipe(1, 0, 2, 3, -5);
+            var learn2 = RecipeHelpers.MakeLearnRecipe(2, 0, 2, -5, 5);
+            _sut.Me.Inventory = new List<int> { 0, 3, 1, 1 };
+            _sut.Recipes = new List<Recipe> { _cast78, _cast79, _cast80, _cast81, learn1, learn2 };
+
+            var result = _sut.DecideAction();
+
+            result.Should().Be("LEARN 1");
         }
     }
 }

@@ -52,5 +52,24 @@ namespace CodingameTests
 
             result.Should().Be(expected);
         }
+        
+        [Theory]
+        [InlineData(true, 0, 0)]
+        [InlineData(true, 3, 6)]
+        [InlineData(true, 3, 3)]
+        [InlineData(false, 1, 0)]
+        [InlineData(false, 5, 3)]
+        public void CanLearnRecipe(bool expected, int spellIndex, int invTier0)
+        {
+            _sut.Inventory = new List<int> { invTier0 };
+            var recipe = new Recipe
+            {
+                Type = ActionType.LEARN
+            };
+
+            var result = _sut.CanLearnRecipe(spellIndex);
+
+            result.Should().Be(expected);
+        }
     }
 }
