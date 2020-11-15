@@ -7,6 +7,9 @@ namespace Codingame
     public class Game
     {
         public Witch[] Witches { get; set; }
+
+        private readonly CastSelector _castSelector;
+
         public List<Recipe> Recipes { get; set; }
         public Witch Me { get; }
         public Witch Opponent { get; }
@@ -16,6 +19,7 @@ namespace Codingame
             Me = new Witch();
             Opponent = new Witch();
             Witches = new Witch[] { Me, Opponent};
+            _castSelector = new CastSelector();
         }
 
         public void PrintGameState()
@@ -51,13 +55,16 @@ namespace Codingame
                 || Me.Inventory[3] >= 5 & cookableCasts.Any(c => !c.IsCastable))
                 return "REST";
 
-            var castable = cookableCasts.FirstOrDefault(s => s.IsCastable);
+            var availableCasts = cookableCasts.Where(s => s.IsCastable);
+            var maxIncome = Recipes.Where(r => r.Type == ActionType.BREW)
+                                  .Max(r => r.Income);
+            var targetBrew = Recipes.FirstOrDefault(r => r.Income == maxIncome);
+            var targetInventoryDelta = targetBrew.GetInventoryDelta(Me.Inventory);
+            var toCast = _castSelector.FindCast(targetInventoryDelta, availableCasts);
 
-            return castable != null
-                ? $"CAST {castable.Id}"
+            return toCast != null
+                ? $"CAST {toCast.Id}"
                 : "WAIT";
         }
-
-
     }
 }

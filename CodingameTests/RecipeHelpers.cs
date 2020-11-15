@@ -37,5 +37,15 @@ namespace CodingameTests
                 Type = ActionType.LEARN
             };
         }
+        
+        public static Recipe MakeDeltaRecipe(params int[] ingredients)
+        {
+            return new Recipe
+            {
+                IsCastable = false,
+                Ingredients = ingredients,
+                Type = ActionType.DELTA
+            };
+        }
     }
 }

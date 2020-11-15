@@ -6,5 +6,6 @@
         public const string CAST = "CAST";
         public const string OPPONENT_CAST = "OPPONENT_CAST";
         public const string LEARN = "LEARN";
+        public const string DELTA = "DELTA";
     }
 }
