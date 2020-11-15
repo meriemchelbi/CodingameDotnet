@@ -31,7 +31,7 @@ namespace Codingame
                 Ingredients = new int[]
                 {
                     recipe.Ingredients[0] + inventory[0],
-                    recipe.Ingredients[1] + inventory[2],
+                    recipe.Ingredients[1] + inventory[1],
                     recipe.Ingredients[2] + inventory[2],
                     recipe.Ingredients[3] + inventory[3]
                 },

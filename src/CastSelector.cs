@@ -5,7 +5,7 @@ namespace Codingame
 {
     public class CastSelector
     {
-        public Recipe FindCast(Recipe targetInventoryDelta, IEnumerable<Recipe> availableCasts)
+        public Recipe FindCastForTargetBrew(Recipe targetInventoryDelta, IEnumerable<Recipe> availableCasts)
         {
             var smallestCost = int.MinValue;
             var highestYield = int.MinValue;

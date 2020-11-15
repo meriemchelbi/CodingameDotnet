@@ -29,7 +29,7 @@ namespace CodingameTests
             var casts = new List<Recipe> { _cast0, _cast1, _cast2, _cast3 };
             var targetInventoryDelta = RecipeHelpers.MakeDeltaRecipe(1, 1, -2, 5);
 
-            var result = _sut.FindCast(targetInventoryDelta, casts);
+            var result = _sut.FindCastForTargetBrew(targetInventoryDelta, casts);
 
             result.Should().BeEquivalentTo(_cast2);
         }
