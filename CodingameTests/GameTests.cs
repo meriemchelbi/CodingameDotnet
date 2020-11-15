@@ -123,11 +123,11 @@ namespace CodingameTests
         }
         
         [Fact]
-        public void DecideAction_NoFreeLearnable_DoesntIssueLearnInstruction()
+        public void DecideAction_NoCheapFreeLearnable_DoesntIssueLearnInstruction()
         {
             _cast79.IsCastable = true;
             var costlyLearn1 = RecipeHelpers.MakeLearnRecipe(1, 0, -3, 2, 1);
-            var costlyLearn2 = RecipeHelpers.MakeLearnRecipe(2, -1, 1, 2, 1);
+            var costlyLearn2 = RecipeHelpers.MakeLearnRecipe(2, -2, 1, 2, -1);
 
             _sut.Me.Inventory = new int[] { 5, 0, 0, 0 };
             _sut.Recipes = new List<Recipe> { _brew47, _brew54, costlyLearn1, costlyLearn2, _cast78, _cast79, _cast80 };

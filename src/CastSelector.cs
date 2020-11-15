@@ -29,7 +29,7 @@ namespace Codingame
                     mostLucrativeCast = cast;
                 }
             }
-            
+            // TODO work out whether to repeat a cast
             return cheapestCast ?? mostLucrativeCast?? availableCasts.FirstOrDefault();
         }
     }

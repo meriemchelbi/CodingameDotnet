@@ -44,9 +44,9 @@ namespace CodingameTests
         }
         
         [Fact]
-        public void FindLearn_NoFreeLearns_OneChargingFinalIngredient_ReturnsThat()
+        public void FindLearn_NoFreeLearns_ReturnsLeastExpensive()
         {
-            var learn1 = RecipeHelpers.MakeLearnRecipe(1, -1, 2, 5, 0);
+            var learn1 = RecipeHelpers.MakeLearnRecipe(1, -3, 2, 5, 0);
             var learn2 = RecipeHelpers.MakeLearnRecipe(2, 1, 2, -5, 0);
             var learn3 = RecipeHelpers.MakeLearnRecipe(3, 1, 2, 0, -1);
 
@@ -58,9 +58,9 @@ namespace CodingameTests
         }
         
         [Fact]
-        public void FindLearn_NoFreeLearns_NoneChargingFinalIngredient_ReturnsNull()
+        public void FindLearn_NoFreeLearns_NoneCostingLessThan3_ReturnsNull()
         {
-            var learn1 = RecipeHelpers.MakeLearnRecipe(1, -1, 2, 5, 0);
+            var learn1 = RecipeHelpers.MakeLearnRecipe(1, -3, 2, 5, 0);
             var learn2 = RecipeHelpers.MakeLearnRecipe(2, 1, 2, -5, 0);
 
             var learnables = new List<Recipe> { learn1, learn2 };

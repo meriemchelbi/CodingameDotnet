@@ -70,6 +70,7 @@ namespace Codingame
             var availableCasts = cookableCasts.Where(s => s.IsCastable);
             var maxIncome = Recipes.Where(r => r.Type == ActionType.BREW)
                                   .Max(r => r.Income);
+            // TODO rip out to FindTargetBrew (income, achievability, index)
             var targetBrew = Recipes.FirstOrDefault(r => r.Income == maxIncome);
             var targetInventoryDelta = targetBrew.GetInventoryDelta(Me.Inventory);
             var toCast = _castSelector.FindCast(targetInventoryDelta, availableCasts);
