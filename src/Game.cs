@@ -42,20 +42,19 @@ namespace Codingame
                 var maxPrice = brewable.Max(b => b.Price);
                 var selectedBrew = brewable?.FirstOrDefault(b => b.Price == maxPrice);
 
-                // if there are brewable spells, brew the first one you can
                 if (selectedBrew != null)
                     return $"BREW {selectedBrew.Id}";
             }
 
-            var casts = Recipes.Where(r => r.Type == ActionType.CAST);
+            var cookableCasts = Recipes.Where(r => r.Type == ActionType.CAST && Me.CanCookRecipe(r));
 
             // If any of the CAST spells are castable, AND the castable ones are not cookable REST 
             // OR if my last item is greater or equal to 4 and not all spells are castable
-            if ((casts.Any(c => !c.IsCastable) && casts.Where(c => c.IsCastable).All(c => !Me.CanCookRecipe(c)))
-                || Me.Inventory[3] >= 4 & !casts.All(c => c.IsCastable))
+            if (cookableCasts.Any() && cookableCasts.All(c => !c.IsCastable)
+                || Me.Inventory[3] >= 4 & cookableCasts.Any(c => !c.IsCastable))
                 return "REST";
 
-            var castable = casts.Where(s => Me.CanCookRecipe(s) && s.IsCastable);
+            var castable = cookableCasts.Where(s => s.IsCastable);
             var selectedCast = _castSelector.SelectCast(castable, Me.Inventory);
 
             return selectedCast is null
