@@ -54,7 +54,7 @@ namespace Codingame
                 || Me.Inventory[3] >= 4 & cookableCasts.Any(c => !c.IsCastable))
                 return "REST";
 
-            var castable = cookableCasts.Where(s => Me.CanCookRecipe(s) && s.IsCastable);
+            var castable = cookableCasts.Where(s => s.IsCastable);
             var selectedCast = _castSelector.SelectCast(castable, Me.Inventory);
 
             return selectedCast is null
