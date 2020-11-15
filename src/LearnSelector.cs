@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Codingame
 {
@@ -9,8 +7,27 @@ namespace Codingame
     {
         public Recipe SelectLearnSpell(IEnumerable<Recipe> cookableLearns)
         {
-            return cookableLearns.FirstOrDefault(c => c.Ingredients[3] == -1)
-                ?? cookableLearns.FirstOrDefault();
+            var selected = cookableLearns.FirstOrDefault(c => c.Ingredients[3] < 0 );
+
+            var lowestCost = int.MinValue;
+            var learnToCostMapping = new Dictionary<Recipe, int>();
+
+            if (selected is null)
+            {
+                foreach (var learn in cookableLearns)
+                {
+                    var cost = learn.Ingredients.Where(i => i < 0).Sum();
+                    learnToCostMapping.Add(learn, cost);
+
+                    lowestCost = cost > lowestCost
+                                   ? cost
+                                   : lowestCost;
+                }
+
+                return learnToCostMapping.FirstOrDefault(m => m.Value == lowestCost).Key;
+            }
+
+            return selected;
         }
     }
 }
