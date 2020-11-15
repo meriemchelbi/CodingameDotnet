@@ -19,6 +19,8 @@ namespace Codingame
                     indexCastsDictionary.Add(2, cast);
                 if (cast.Ingredients[2] == -1)
                     indexCastsDictionary.Add(3, cast);
+                if (cast.Ingredients[3] == -1)
+                    indexCastsDictionary.Add(4, cast);
             }
 
             var lowestItem = inventory.Min();
@@ -36,9 +38,6 @@ namespace Codingame
             {
                 var highestIndex = inventory.IndexOf(highestItem);
                 var highSuccess = indexCastsDictionary.TryGetValue(highestIndex + 1, out var castForHighest);
-
-                if (highestIndex == 3)
-                    highSuccess = indexCastsDictionary.TryGetValue(0, out castForHighest);
 
                 if (highSuccess)
                     return castForHighest;
