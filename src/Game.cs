@@ -8,6 +8,7 @@ namespace Codingame
     {
         public Witch[] Witches { get; set; }
 
+        private readonly LearnSelector _learnSelector;
         private readonly CastSelector _castSelector;
 
         public List<Recipe> Recipes { get; set; }
@@ -19,6 +20,7 @@ namespace Codingame
             Me = new Witch();
             Opponent = new Witch();
             Witches = new Witch[] { Me, Opponent};
+            _learnSelector = new LearnSelector();
             _castSelector = new CastSelector();
         }
 
@@ -55,6 +57,16 @@ namespace Codingame
                 || Me.Inventory[3] >= 5 & cookableCasts.Any(c => !c.IsCastable))
                 return "REST";
 
+            // If there's a free Learnable LEARN, LEARN
+            var learnSpells = Recipes.Where(r => r.Type == ActionType.LEARN).ToList();
+            var learnables = learnSpells.Where(s => Me.CanLearn(learnSpells.IndexOf(s))).ToList();
+            var toLearn = _learnSelector.FindLearn(learnables);
+            if (toLearn != null)
+            {
+                return $"LEARN {toLearn.Id}";
+            }
+
+            // Otherwise work out which cast gets you closest to the BREW with the highest income
             var availableCasts = cookableCasts.Where(s => s.IsCastable);
             var maxIncome = Recipes.Where(r => r.Type == ActionType.BREW)
                                   .Max(r => r.Income);
