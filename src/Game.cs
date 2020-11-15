@@ -53,7 +53,7 @@ namespace Codingame
             // If any of the CAST spells are castable, AND the castable ones are not cookable REST 
             // OR if my last item is greater or equal to 4 and not all spells are castable
             if (cookableCasts.Any() && cookableCasts.All(c => !c.IsCastable)
-                || Me.Inventory[3] >= 4 & cookableCasts.Any(c => !c.IsCastable))
+                || Me.Inventory[3] >= 5 & cookableCasts.Any(c => !c.IsCastable))
                 return "REST";
 
             var availableCastSpells = Recipes.Where(r => r.Type == ActionType.CAST);
