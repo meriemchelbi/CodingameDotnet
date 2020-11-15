@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Codingame
@@ -12,15 +13,15 @@ namespace Codingame
             foreach (var cast in casts)
             {
                 if (cast.Ingredients[0] == 2)
-                    indexCastsDictionary.Add(0, cast);
+                    indexCastsDictionary.TryAdd(0, cast);
                 if (cast.Ingredients[0] == -1)
-                    indexCastsDictionary.Add(1, cast);
+                    indexCastsDictionary.TryAdd(1, cast);
                 if (cast.Ingredients[1] == -1)
-                    indexCastsDictionary.Add(2, cast);
+                    indexCastsDictionary.TryAdd(2, cast);
                 if (cast.Ingredients[2] == -1)
-                    indexCastsDictionary.Add(3, cast);
+                    indexCastsDictionary.TryAdd(3, cast);
                 if (cast.Ingredients[3] == -1)
-                    indexCastsDictionary.Add(4, cast);
+                    indexCastsDictionary.TryAdd(4, cast);
             }
 
             var lowestItem = inventory.Min();
