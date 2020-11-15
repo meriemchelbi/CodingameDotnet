@@ -26,8 +26,8 @@ namespace Codingame
                 Console.Error.WriteLine(recipe.ToString());
             }
             Console.Error.WriteLine("Witches at start of round:");
-            Console.Error.WriteLine($"Me: {Me.ToString()}");
-            Console.Error.WriteLine($"Opponent: {Opponent.ToString()}");
+            Console.Error.WriteLine($"Me: {Me}");
+            Console.Error.WriteLine($"Opponent: {Opponent}");
         }
 
         public string DecideAction()
@@ -45,20 +45,17 @@ namespace Codingame
 
             var casts = Recipes.Where(r => r.Type == ActionType.CAST);
 
-            // If all of the CAST are castable but none are cookable, WAIT
-            if (casts.All(c => c.IsCastable && !Me.CanCookRecipe(c)))
-                return "WAIT";
 
-            // If any of the CAST spells are castable, AND the castable ones are not cookable REST
-            if (casts.Any(c => !c.IsCastable) 
-                && casts.Where(c => c.IsCastable).All(c => !Me.CanCookRecipe(c)))
+            // If any of the CAST spells are castable, AND the castable ones are not cookable REST 
+            // OR if my last item is greater or equal to 4 and not all spells are castable
+            if ((casts.Any(c => !c.IsCastable) && casts.Where(c => c.IsCastable).All(c => !Me.CanCookRecipe(c)))
+                || Me.Inventory[3] >= 4 & !casts.All(c => c.IsCastable))
                 return "REST";
 
-            else
-            {
-                var castable = casts.FirstOrDefault(s => Me.CanCookRecipe(s) && s.IsCastable);
-                return $"CAST {castable.Id}";
-            }
+            var castable = casts.FirstOrDefault(s => Me.CanCookRecipe(s) && s.IsCastable);
+            return castable != null
+                ? $"CAST {castable.Id}"
+                : "WAIT";
         }
 
 
