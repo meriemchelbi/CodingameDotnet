@@ -40,22 +40,33 @@ namespace Codingame
 
         public string DecideAction()
         {
-            var brewable = Recipes.Where(r => r.Type == ActionType.BREW && RecipeExtensions.CanCookRecipe(Me.Inventory, r)).ToList();
+            #region BREW
+            var brewable = Recipes.Where(r => r.Type == ActionType.BREW && RecipeExtensions.CanCookRecipe(Me.Inventory, r))
+                                  .ToList();
+
             if (brewable.Count > 0)
             {
                 var maxPrice = brewable.Max(b => b.Income);
                 var selectedBrew = brewable?.FirstOrDefault(b => b.Income == maxPrice);
 
                 if (selectedBrew != null)
+                {
                     return $"BREW {selectedBrew.Id}";
+                }
             }
+            #endregion
 
+            #region REST
             var cookableCasts = Recipes.Where(r => r.Type == ActionType.CAST && RecipeExtensions.CanCookRecipe(Me.Inventory, r));
 
             if (cookableCasts.Any() && cookableCasts.All(c => !c.IsCastable)
                 || Me.Inventory[3] >= 5 & cookableCasts.Any(c => !c.IsCastable))
+            {
                 return "REST";
+            }
+            #endregion
 
+            #region LEARN
             var learnSpells = Recipes.Where(r => r.Type == ActionType.LEARN).ToList();
             var learnables = learnSpells.Where(s => RecipeExtensions.CanLearn(Me.Inventory, learnSpells.IndexOf(s))).ToList();
             var toLearn = _learnSelector.FindLearn(learnables);
@@ -63,13 +74,16 @@ namespace Codingame
             {
                 return $"LEARN {toLearn.Id}";
             }
+            #endregion
 
+            #region CAST
             var brewSpells = Recipes.Where(r => r.Type == ActionType.BREW);
             var targetBrew = _brewSelector.SelectTargetBrewSpell(brewSpells, Me.Inventory);
 
             var availableCasts = cookableCasts.Where(s => s.IsCastable);
             var targetInventoryDelta = targetBrew.GetInventoryDelta(Me.Inventory);
             var toCast = _castSelector.FindCastForTargetBrew(targetInventoryDelta, availableCasts);
+            #endregion
 
             return toCast != null
                 ? $"CAST {toCast.Id}"
