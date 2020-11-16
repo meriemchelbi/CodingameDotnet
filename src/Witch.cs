@@ -10,26 +10,6 @@
             Inventory = new int[4];
         }
 
-        public bool CanCook(Recipe recipe)
-        {
-            var ingredients = recipe.Ingredients;
-
-            var sum0 = ingredients[0] + Inventory[0];
-            var sum1 = ingredients[1] + Inventory[1];
-            var sum2 = ingredients[2] + Inventory[2];
-            var sum3 = ingredients[3] + Inventory[3];
-
-            var sumOfSums = sum0 + sum1 + sum2 + sum3;
-
-            return sum0 >= 0 && sum1 >= 0 && sum2 >= 0 && sum3 >= 0
-                && sumOfSums <= 10;
-        }
-
-        public bool CanLearn(int spellIndex)
-        {
-            return spellIndex <= Inventory[0];
-        }
-
         public override string ToString()
         {
             var inventory = string.Empty;

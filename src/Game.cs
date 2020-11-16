@@ -40,7 +40,7 @@ namespace Codingame
 
         public string DecideAction()
         {
-            var brewable = Recipes.Where(r => r.Type == ActionType.BREW && Me.CanCook(r)).ToList();
+            var brewable = Recipes.Where(r => r.Type == ActionType.BREW && RecipeExtensions.CanCookRecipe(Me.Inventory, r)).ToList();
             if (brewable.Count > 0)
             {
                 var maxPrice = brewable.Max(b => b.Income);
@@ -50,7 +50,7 @@ namespace Codingame
                     return $"BREW {selectedBrew.Id}";
             }
 
-            var cookableCasts = Recipes.Where(r => r.Type == ActionType.CAST && Me.CanCook(r));
+            var cookableCasts = Recipes.Where(r => r.Type == ActionType.CAST && RecipeExtensions.CanCookRecipe(Me.Inventory, r));
 
             if (cookableCasts.Any() && cookableCasts.All(c => !c.IsCastable)
                 || Me.Inventory[3] >= 5 & cookableCasts.Any(c => !c.IsCastable))
