@@ -8,6 +8,11 @@ namespace Codingame
         {
             return recipe.Ingredients.Where(i => i < 0).Sum();
         }
+        
+        public static int GetYield(this Recipe recipe)
+        {
+            return recipe.Ingredients.Where(i => i > 0).Sum();
+        }
 
         public static Recipe GetDelta(this Recipe recipe1, Recipe recipe2)
         {

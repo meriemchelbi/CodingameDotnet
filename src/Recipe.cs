@@ -11,10 +11,16 @@ namespace Codingame
         public bool IsCastable { get; set; }
         public int Cost
         {
-            get { return this.GetCost(); }
+            get { return _cost; }
         }
-        
-        private readonly int _cost;
+        public int Yield
+        {
+            get { return _yield; }
+        }
+
+
+        private int _cost => this.GetCost();
+        private int _yield => this.GetYield();
 
         public override string ToString()
         {
