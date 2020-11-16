@@ -57,7 +57,7 @@ namespace Codingame
                 return "REST";
 
             var learnSpells = Recipes.Where(r => r.Type == ActionType.LEARN).ToList();
-            var learnables = learnSpells.Where(s => Me.CanLearn(learnSpells.IndexOf(s))).ToList();
+            var learnables = learnSpells.Where(s => RecipeExtensions.CanLearn(Me.Inventory, learnSpells.IndexOf(s))).ToList();
             var toLearn = _learnSelector.FindLearn(learnables);
             if (toLearn != null)
             {
