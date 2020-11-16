@@ -9,28 +9,34 @@ namespace Codingame
         {
             var smallestCost = int.MinValue;
             var highestYield = int.MinValue;
-            Recipe cheapestCast = null;
-            Recipe mostLucrativeCast = null;
+            var castDeltaMappings = new Dictionary<Recipe, (int, int)>();
 
             foreach (var cast in availableCasts)
             {
                 var delta = cast.GetDelta(targetInventoryDelta);
 
                 if (delta.Cost > smallestCost)
-                {
                     smallestCost = delta.Cost;
-                    cheapestCast = cast;
-                }
 
+                // TODO add yield to Recipe model
                 var yield = delta.Ingredients.Sum();
+
                 if (yield > highestYield)
-                {
                     highestYield = yield;
-                    mostLucrativeCast = cast;
-                }
+
+                castDeltaMappings.Add(cast, (delta.Cost, yield));
             }
+
+            var cheapestCasts = castDeltaMappings.Where(m => m.Value.Item1 == smallestCost)
+                                                 .Select(m => m.Key).ToList();
+            var highestYieldCasts = castDeltaMappings.Where(m => m.Value.Item2 == highestYield)
+                                                      .Select(m => m.Key);
+
             // TODO work out whether to repeat a cast
-            return cheapestCast ?? mostLucrativeCast?? availableCasts.FirstOrDefault();
+            return cheapestCasts.Count == 1 
+                    ? cheapestCasts.FirstOrDefault()
+                    : highestYieldCasts.FirstOrDefault()
+                    ?? availableCasts.FirstOrDefault();
         }
     }
 }

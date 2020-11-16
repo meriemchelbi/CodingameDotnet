@@ -1,6 +1,5 @@
 ﻿using Codingame;
 using FluentAssertions;
-using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -33,18 +32,18 @@ namespace CodingameTests
 
             result.Should().BeEquivalentTo(_cast2);
         }
-        
-        //[Fact]
-        //public void FindCast_AllSameCosts_ReturnsCastWithHighestIngredientBeforeRequired()
-        //{
-        //    var cast5 = RecipeHelpers.MakeCastRecipe(5, 1, -1, 1, 2);
-        //    var casts = new List<Recipe> { _cast0, _cast2, cast5 };
-        //    var targetInventoryDelta = RecipeHelpers.MakeDeltaRecipe(1, 1, -2, 5);
 
-        //    var result = _sut.FindCast(targetInventoryDelta, casts);
+        [Fact]
+        public void FindCast_AllSameCosts_ReturnsCastWithHighestYield()
+        {
+            var cast5 = RecipeHelpers.MakeCastRecipe(5, 1, -1, 1, 2);
+            var casts = new List<Recipe> { _cast2, _cast3, cast5, _cast1 };
+            var targetInventoryDelta = RecipeHelpers.MakeDeltaRecipe(1, 1, -2, 5);
 
-        //    result.Should().BeEquivalentTo(cast5);
-        //}
+            var result = _sut.FindCastForTargetBrew(targetInventoryDelta, casts);
+
+            result.Should().BeEquivalentTo(cast5);
+        }
 
     }
 }
