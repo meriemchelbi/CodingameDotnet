@@ -7,35 +7,32 @@ namespace Codingame
     {
         public Recipe FindCastForTargetBrew(Recipe targetInventoryDelta, IEnumerable<Recipe> availableCasts)
         {
-            var smallestCost = int.MinValue;
-            var highestYield = int.MinValue;
-            var castDeltaMappings = new Dictionary<Recipe, (int, int)>();
+            var leastNegativeEndInventory = int.MinValue;
+            var fullestEndInventory = int.MinValue;
+            var castDeltaMappings = new Dictionary<Recipe, Recipe>();
 
             foreach (var cast in availableCasts)
             {
                 var delta = cast.GetDelta(targetInventoryDelta);
 
-                if (delta.Cost > smallestCost)
-                    smallestCost = delta.Cost;
+                if (delta.Cost > leastNegativeEndInventory)
+                    leastNegativeEndInventory = delta.Cost;
 
-                // TODO add yield to Recipe model
-                var yield = delta.Ingredients.Sum();
+                if (delta.Yield > fullestEndInventory)
+                    fullestEndInventory = delta.Yield;
 
-                if (yield > highestYield)
-                    highestYield = yield;
-
-                castDeltaMappings.Add(cast, (delta.Cost, yield));
+                castDeltaMappings.Add(cast, delta);
             }
 
-            var cheapestCasts = castDeltaMappings.Where(m => m.Value.Item1 == smallestCost)
+            var cheapestCasts = castDeltaMappings.Where(m => m.Value.Cost == leastNegativeEndInventory)
                                                  .Select(m => m.Key).ToList();
-            var highestYieldCasts = castDeltaMappings.Where(m => m.Value.Item2 == highestYield)
+            var highestRemainderCasts = castDeltaMappings.Where(m => m.Value.Yield == fullestEndInventory)
                                                       .Select(m => m.Key);
 
             // TODO work out whether to repeat a cast
             return cheapestCasts.Count == 1 
                     ? cheapestCasts.FirstOrDefault()
-                    : highestYieldCasts.FirstOrDefault()
+                    : highestRemainderCasts.FirstOrDefault()
                     ?? availableCasts.FirstOrDefault();
         }
     }

@@ -29,17 +29,6 @@ namespace Codingame
                    ? mostAchievableBrews.FirstOrDefault()
                    : mostAchievableBrews.FirstOrDefault(r => r.Income == mostAchievableBrews.Max(r => r.Income))
                    ?? brewRecipes.FirstOrDefault();
-
-            //var maxIncome = brewRecipes.Max(r => r.Income);
-            //var mostLucrative = brewRecipes.Where(r => r.Income == maxIncome);
-
-            //if (mostLucrative.Count() == 1)
-            //{
-            //    return mostLucrative.FirstOrDefault();
-            //}
-
-            //var lowestPrice = mostLucrative.Max(l => l.Cost);
-            //return mostLucrative.FirstOrDefault(l => l.Cost == lowestPrice) ?? brewRecipes.FirstOrDefault();
         }
     }
 }
