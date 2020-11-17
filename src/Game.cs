@@ -47,11 +47,11 @@ namespace Codingame
             if (brewable.Count > 0)
             {
                 var maxPrice = brewable.Max(b => b.Income);
-                var selectedBrew = brewable?.FirstOrDefault(b => b.Income == maxPrice);
+                var toBrew = brewable?.FirstOrDefault(b => b.Income == maxPrice);
 
-                if (selectedBrew != null)
+                if (toBrew != null)
                 {
-                    return $"BREW {selectedBrew.Id}";
+                    return $"BREW {toBrew.Id}";
                 }
             }
             #endregion
@@ -79,7 +79,7 @@ namespace Codingame
             #region CAST
             var brewSpells = Recipes.Where(r => r.Type == ActionType.BREW);
             var targetBrew = _brewSelector.SelectTargetBrewSpell(brewSpells, Me.Inventory);
-
+            Console.Error.WriteLine($"Targeting Brew {targetBrew}");
             var availableCasts = cookableCasts.Where(s => s.IsCastable);
             var targetInventoryDelta = targetBrew.GetInventoryDelta(Me.Inventory);
             var toCast = _castSelector.FindCastForTargetBrew(targetInventoryDelta, availableCasts);
