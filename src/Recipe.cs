@@ -32,7 +32,8 @@ namespace Codingame
             {
                 ingredients += ingredient + " ";
             }
-            return $"Id: {Id}, Type : {Type}, ingredients: {ingredients}, price: {Income}\nisCastable: {IsCastable}, IsRepeatable: {IsRepeatable}, TomeIndex: {TomeIndex}, TaxCount {TaxCount}";
+            return $"Id: {Id}, Type : {Type}, ingredients: {ingredients}, price: {Income}" +
+                   $"\n\tisCastable: {IsCastable}, IsRepeatable: {IsRepeatable}, TomeIndex: {TomeIndex}, TaxCount {TaxCount}";
         }
     }
 }
