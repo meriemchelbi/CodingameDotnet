@@ -85,9 +85,7 @@ namespace Codingame
             var toCast = _castSelector.FindCastForTargetBrew(targetInventoryDelta, availableCasts);
             #endregion
 
-            return toCast != null
-                ? $"CAST {toCast.Id}"
-                : "WAIT";
+            return toCast ?? "WAIT";
         }
     }
 }

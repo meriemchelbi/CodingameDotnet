@@ -5,7 +5,7 @@ namespace Codingame
 {
     public class CastSelector
     {
-        public Recipe FindCastForTargetBrew(Recipe targetInventoryDelta, IEnumerable<Recipe> availableCasts)
+        public string FindCastForTargetBrew(Recipe targetInventoryDelta, IEnumerable<Recipe> availableCasts)
         {
             var leastNegativeEndInventory = int.MinValue;
             var fullestEndInventory = int.MinValue;
@@ -30,10 +30,14 @@ namespace Codingame
                                                       .Select(m => m.Key);
 
             // TODO work out whether to repeat a cast
-            return cheapestCasts.Count == 1 
+            var selected = cheapestCasts.Count == 1 
                     ? cheapestCasts.FirstOrDefault()
                     : highestRemainderCasts.FirstOrDefault()
                     ?? availableCasts.FirstOrDefault();
+
+            return selected is null
+                ? null
+                : $"{selected.Type} {selected.Id}";
         }
     }
 }
