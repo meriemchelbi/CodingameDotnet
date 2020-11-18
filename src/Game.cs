@@ -80,9 +80,9 @@ namespace Codingame
             var brewSpells = Recipes.Where(r => r.Type == ActionType.BREW);
             var targetBrew = _brewSelector.SelectTargetBrewSpell(brewSpells, Me.Inventory);
             Console.Error.WriteLine($"Targeting Brew {targetBrew}");
-            var availableCasts = cookableCasts.Where(s => s.IsCastable);
-            var targetInventoryDelta = targetBrew.GetInventoryDelta(Me.Inventory);
-            var toCast = _castSelector.FindCastForTargetBrew(targetInventoryDelta, availableCasts);
+
+            var availableCasts = Recipes.Where(r => r.Type == ActionType.CAST && r.IsCastable == true);
+            var toCast = _castSelector.FindCastForTargetBrew(targetBrew, Me.Inventory, availableCasts);
             #endregion
 
             return toCast ?? "WAIT";

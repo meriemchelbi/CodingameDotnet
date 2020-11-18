@@ -44,7 +44,7 @@ namespace Codingame
             };
         }
 
-        public static bool CanCookRecipe(int[] inventory, Recipe recipe)
+        public static bool CanCookRecipe(this Recipe recipe, int[] inventory)
         {
             var ingredients = recipe.Ingredients;
 
