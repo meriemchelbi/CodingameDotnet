@@ -9,6 +9,9 @@ namespace Codingame
         public int[] Ingredients { get; set; }
         public int Income { get; set; }
         public bool IsCastable { get; set; }
+        public bool IsRepeatable { get; set; }
+        public int TomeIndex { get; set; }
+        public int TaxCount { get; set; }
         public int Cost
         {
             get { return _cost; }
@@ -29,7 +32,7 @@ namespace Codingame
             {
                 ingredients += ingredient + " ";
             }
-            return $"Id: {Id}, Type : {Type}, ingredients: {ingredients}, isCastable: {IsCastable}, price: {Income}";
+            return $"Id: {Id}, Type : {Type}, ingredients: {ingredients}, price: {Income}\nisCastable: {IsCastable}, IsRepeatable: {IsRepeatable}, TomeIndex: {TomeIndex}, TaxCount {TaxCount}";
         }
     }
 }

@@ -26,6 +26,9 @@ namespace Codingame
                     var delta3 = int.Parse(inputs[5]); // tier-3 ingredient change
                     var price = int.Parse(inputs[6]); // the price in rupees if this is a potion
                     var castable = inputs[9] != "0"; // in the first league: always 0; later: 1 if this is a castable player spell
+                    var repeatable = inputs[10] != "0"; // for the first two leagues: always 0; later: 1 if this is a repeatable player spell
+                    var tomeIndex = int.Parse(inputs[7]); // in the first two leagues: always 0; later: the index in the tome if this is a tome spell, equal to the read-ahead tax
+                    var taxCount = int.Parse(inputs[8]); // in the first two leagues: always 0; later: the amount of taxed tier-0 ingredients you gain from learning this spell
 
                     var recipe = new Recipe
                     {
@@ -33,14 +36,14 @@ namespace Codingame
                         Type = actionType,
                         Ingredients = new int[] { delta0, delta1, delta2, delta3 },
                         Income = price,
-                        IsCastable = castable
+                        IsCastable = castable,
+                        IsRepeatable = repeatable,
+                        TaxCount = taxCount,
+                        TomeIndex = tomeIndex
                     };
 
                     game.Recipes.Add(recipe);
 
-                    int tomeIndex = int.Parse(inputs[7]); // in the first two leagues: always 0; later: the index in the tome if this is a tome spell, equal to the read-ahead tax
-                    int taxCount = int.Parse(inputs[8]); // in the first two leagues: always 0; later: the amount of taxed tier-0 ingredients you gain from learning this spell
-                    bool repeatable = inputs[10] != "0"; // for the first two leagues: always 0; later: 1 if this is a repeatable player spell
                 }
 
                 for (int i = 0; i < 2; i++)
