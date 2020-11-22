@@ -7,14 +7,16 @@ namespace Codingame
     {
         public string FindCastForTargetBrew(Recipe targetBrew, int[] inventory, IEnumerable<Recipe> castableCasts)
         {
+            if (castableCasts is null 
+                || !castableCasts.Any() 
+                || castableCasts.All(c => !c.CanCookRecipe(inventory)))
+            {
+                return null;
+            }
+
             var castsMappings = new Dictionary<Recipe, CastStats>();
             var leastNegativeEndInventory = int.MinValue;
             var fullestEndInventory = int.MinValue;
-
-            // if cookable twice
-            // calculate delta
-            // perform highest & lowest inventory checks
-            // Add to cast stats
 
             foreach (var cast in castableCasts)
             {
@@ -35,10 +37,13 @@ namespace Codingame
                     stats.CookableOnce = true;
                     stats.EndStateOnce = delta;
                 }
-                
-                if (cast.CanCookRecipe(inventory))
+
+                var inventoryCastOnce = cast.GetInventoryDelta(inventory);
+                var targetInvDeltaSecond = targetBrew.GetDelta(inventoryCastOnce);
+
+                if (cast.IsRepeatable && cast.CanCookRecipe(inventoryCastOnce.Ingredients))
                 {
-                    var delta = cast.GetDelta(targetInventoryDelta);
+                    var delta = cast.GetDelta(targetInvDeltaSecond);
 
                     if (delta.Cost > leastNegativeEndInventory)
                         leastNegativeEndInventory = delta.Cost;
@@ -46,11 +51,28 @@ namespace Codingame
                     if (delta.Yield > fullestEndInventory)
                         fullestEndInventory = delta.Yield;
 
-                    stats.CookableOnce = true;
-                    stats.EndStateOnce = delta;
+                    stats.CookableTwice = true;
+                    stats.EndStateTwice = delta;
                 }
-
             }
+
+            var lowestCost = castsMappings.Where(c => c.Value.CookableOnce && c.Value.EndStateOnce.Cost == leastNegativeEndInventory
+                                                    || c.Value.CookableTwice && c.Value.EndStateTwice.Cost == leastNegativeEndInventory)
+                                        .ToList();
+
+            var highestYield = castsMappings.Where(c => c.Value.CookableOnce && c.Value.EndStateOnce.Yield == fullestEndInventory
+                                                    || c.Value.CookableTwice && c.Value.EndStateTwice.Yield == fullestEndInventory)
+                                          .FirstOrDefault();
+
+            var selected = lowestCost.Count == 1
+                           ? lowestCost.FirstOrDefault()
+                           : highestYield;
+
+            var result = selected.Value.CookableTwice
+                        ? $"{selected.Key.Type} {selected.Key.Id} 2"
+                        : $"{selected.Key.Type} {selected.Key.Id}";
+
+            return result;
 
             //var cheapestCasts = castDeltaMappings.Where(m => m.Value.Cost == leastNegativeEndInventory)
             //                                     .Select(m => m.Key).ToList();

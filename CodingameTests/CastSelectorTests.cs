@@ -35,7 +35,7 @@ namespace CodingameTests
         }
         
         [Fact]
-        public void FindCast_NoneRepeatable_AllCookable_SmallestEndStateCost_WhenCastTwice()
+        public void FindCast_AllRepeatable_AllCookable_SmallestEndStateCost_WhenCastTwice()
         {
             _cast0.IsRepeatable = true;
             _cast1.IsRepeatable = true;
@@ -48,7 +48,7 @@ namespace CodingameTests
 
             var result = _sut.FindCastForTargetBrew(targetBrew, inventory, casts);
 
-            result.Should().Be("CAST 2 2");
+            result.Should().Be("CAST 3 2");
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace CodingameTests
         [Fact]
         public void FindCast_SingleCastableNotCookable_ReturnsNull()
         {
-            var casts = new List<Recipe> { _cast0, _cast1, _cast2, _cast3 };
+            var casts = new List<Recipe> { _cast3 };
             var inventory = new int[] { 2, 2, 0, 0 };
             var targetBrew = RecipeHelpers.MakeBrewRecipe(1, 100, 0, -2, 0, -2);
 
@@ -81,7 +81,7 @@ namespace CodingameTests
             var inventory = new int[] { 2, 2, 0, 0 };
             var targetBrew = RecipeHelpers.MakeBrewRecipe(1, 100, 0, -2, 0, -2);
 
-            var result = _sut.FindCastForTargetBrew(targetBrew, inventory, null);
+            var result = _sut.FindCastForTargetBrew(targetBrew, inventory, new List<Recipe>());
 
             result.Should().BeNull();
         }
@@ -89,7 +89,6 @@ namespace CodingameTests
         [Fact]
         public void FindCast_AllCastableCookable_NoneRepeatable_SameEndCosts_ReturnsCastWithHighestEndStateYield()
         {
-            _cast3.IsCastable = true;           
             var cast5 = RecipeHelpers.MakeCastRecipe(5, 1, -1, 1, 2);
 
             var casts = new List<Recipe> { _cast2, _cast3, cast5 };

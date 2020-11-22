@@ -41,7 +41,7 @@ namespace Codingame
         public string DecideAction()
         {
             #region BREW
-            var brewable = Recipes.Where(r => r.Type == ActionType.BREW && RecipeExtensions.CanCookRecipe(Me.Inventory, r))
+            var brewable = Recipes.Where(r => r.Type == ActionType.BREW && RecipeExtensions.CanCookRecipe(r, Me.Inventory))
                                   .ToList();
 
             if (brewable.Count > 0)
@@ -57,7 +57,7 @@ namespace Codingame
             #endregion
 
             #region REST
-            var cookableCasts = Recipes.Where(r => r.Type == ActionType.CAST && RecipeExtensions.CanCookRecipe(Me.Inventory, r));
+            var cookableCasts = Recipes.Where(r => r.Type == ActionType.CAST && RecipeExtensions.CanCookRecipe(r, Me.Inventory));
 
             if (cookableCasts.Any() && cookableCasts.All(c => !c.IsCastable)
                 || Me.Inventory[3] >= 5 & cookableCasts.Any(c => !c.IsCastable))

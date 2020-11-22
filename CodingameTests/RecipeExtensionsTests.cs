@@ -21,7 +21,7 @@ namespace CodingameTests
                 Type = ActionType.BREW
             };
 
-            var result = RecipeExtensions.CanCookRecipe(inventory, recipe);
+            var result = RecipeExtensions.CanCookRecipe(recipe, inventory);
 
             result.Should().Be(expected);
         }
@@ -38,7 +38,7 @@ namespace CodingameTests
                 Type = ActionType.CAST
             };
 
-            var result = RecipeExtensions.CanCookRecipe(inventory, recipe);
+            var result = RecipeExtensions.CanCookRecipe(recipe, inventory);
 
             result.Should().Be(expected);
         }
